@@ -1,1 +1,17 @@
 Rajataan prototyyppi seuraavanlaisesti:
+
+Kaksi mannerta
+    Eurooppa
+    Afrikka
+
+Pelaajan tiedot tallentuu tietokantaan pelin loppuessa
+    nimi
+    pistemäärä
+
+Mantereen sisällä vaaditut tehtävät
+    jotain kysymyksiä johon vaaditaan input?
+
+Pelaaja voi valita lentokoneen
+    pieni ja suuri
+
+Lentokenttien karsimiseen algoritmi
