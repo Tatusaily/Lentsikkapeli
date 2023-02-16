@@ -9,9 +9,8 @@ def newplayer():
 
 pygame.init()
 #Vakiot
-screenXRes = 800
-screenYRes = 600
-screenResolution = (screenXRes, screenYRes)
+screenResolution = (800, 600)
+screen = pygame.display.set_mode((screenResolution), pygame.RESIZABLE)
 
 
 
