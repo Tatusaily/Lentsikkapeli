@@ -1,10 +1,25 @@
-def newplayer:
+import pygame
+
+#Funktiot tähän
+def newplayer():
     #Tähän koodia joka tekee uuden pelaajan sql kantaan.
     #Pelaajan tiedot on game-taulussa
+    return
 
 
-while gameRunning = True:
-    #jotain
+pygame.init()
+#Vakiot
+screenXRes = 800
+screenYRes = 600
+screenResolution = (screenXRes, screenYRes)
 
 
-quit(Print("Nyt sammutaan."))
+
+#Pää looppi
+gameRunning = True
+while gameRunning == True:
+    for event in pygame.event.get():
+        if event.type == pygame .QUIT:
+            pygame.quit()
+            quit(print("Sammutaan koska quit"))
+
