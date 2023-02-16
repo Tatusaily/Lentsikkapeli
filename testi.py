@@ -20,7 +20,7 @@ while True:
             pygame.quit()
             exit()
 
-    screen.blit(test_surface,(0,0))
+    screen.blit(test_surface,(700,0))
     teepalikka(100,200,"blue",0,200)
 
     pygame.display.update()
