@@ -49,7 +49,7 @@ def main_menu():
     # looppi millä valikot pysyvät näkyvissä valintaan asti. yritetään saada valinta tehtyä hiirellä.
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -84,3 +84,5 @@ def load_game():
 def save_game():
     print("seivgeimrofl")
     return
+
+main_menu()
