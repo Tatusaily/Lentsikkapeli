@@ -1,33 +1,50 @@
 import mysql.connector
+import random
 # Funktiot tähän
 def uusipeli():
     print("UUSIPELI")
-    pelaajanimi = str(input("Anna pelaajanimesi: "))
-    salasana = str(input("Anna salasanasi: "))
     yhteys = mysql.connector.connect(
         host='localhost', port=3306,
         database='flight_game', user='user1',
         password='sala1', autocommit=True)
     kursori = yhteys.cursor()
 
-    # Tarkistetaan pelaajan nimi
-    tarkista = f"SELECT count(*) as count FROM game WHERE screen_name = '{pelaajanimi}';"
-    kursori.execute(tarkista)
-    onkonimi = kursori.fetchone()
-    if onkonimi[0] > 0:
-        print("Pelaajanimi on jo käytössä. Yritä jotakin toista.")
-    else:
-        query = f"INSERT INTO game (screen_name, password) VALUES ('{pelaajanimi}', '{salasana}');"
+    # Otetaan pelaajalta nimi ja salasana, tarkistetaan ne ja laitetaan ne kantaan
+    while True:
+        pelaajanimi = str(input("Anna pelaajanimesi: "))
+        salasana = str(input("Anna salasanasi: "))
+        # Tarkistetaan pelaajan nimi
+        query = f"SELECT count(*) as count FROM game WHERE screen_name = '{pelaajanimi}';"
         kursori.execute(query)
-    kursori.close()
-    yhteys.close()
+        onkonimi = kursori.fetchone()
+        if onkonimi[0] > 0:
+            print("Pelaajanimi on jo käytössä. Yritä jotakin toista.")
+        else:
+            query = f"INSERT INTO game (screen_name, password) VALUES ('{pelaajanimi}', '{salasana}');"
+            kursori.execute(query)
+            break
 
     # Randomoidaan ne kentät ja tallennetaan ne jotenkin tietokantaan.
+    query = f"SELECT ident FROM airport WHERE continent= 'EU' AND(NOT iso_country = 'RU');"
+    kursori.execute(query)
+    kentät = kursori.fetchall()
+    filtered_airports = random.sample(kentät, 5)
+    query = f"SELECT id FROM game WHERE screen_name = '{pelaajanimi}' AND password = '{salasana}';"
+    kursori.execute(query)
+    pelaajaID = kursori.fetchone()
+    for airport in filtered_airports:
+        query = f"REPLACE INTO randomport(pelaaja_id, ICAO) VALUES ('{pelaajaID[0]}', '{airport[0]}');"
+        kursori.execute(query)
+
+    kursori.close()
+    yhteys.close()
     return
 def jatkapeli():
     print("JATKAPELI")
     # Pelaaja syöttää nimen, jos nimi on tietokannassa niin:
         # Pelaaja syöttää salasanan tai poistuu takaisin menuun
+    pelaajanimi = input("Anna käyttäjänimi: ")
+    salasana = input("Anna salasana: ")
     return
 def highscore():
     print("HIGHSCORE")
@@ -66,5 +83,6 @@ while gameRunning == True:
         päämenu()
     elif gamestate == "uusipeli":
         uusipeli()
+        print("Uusi tunnus luotu.")
     elif gamestate == "vanhapeli":
         jatkapeli()
