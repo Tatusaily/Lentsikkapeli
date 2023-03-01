@@ -9,33 +9,47 @@ screenx = 800
 screeny = 600
 screen = pygame.display.set_mode((screenx, screeny))
 
-""" Tää CLASSI ei tee mitään kun en saanut sitä toimimaan :(
+#Tää CLASSI ei toiminut koska tein sen väärin :(
+#Nyt se toimii, koska tein sen oikein :)
 class MENUBUTTON:
-    #Nappi jossa on tekstiä
-    #Nappi haluaa tekstin ja sijainnin
-    def __init__(self, txt, x, y):
-        text = menufont.render(txt, True, "WHITE")
+    instances = []
+    def __init__(self,name, txt, x, y):
+        self.__class__.instances.append(self)
+        self.name = name
+        self.teksti = txt
+        self.x = x
+        self.y = y
+        self.text = menufont.render(txt, True, "WHITE")
+        self.text_rect = self.text.get_rect(center=(self.x, self.y))
+        screen.blit(self.text, self.text_rect)
 
-    def draw(self, x, y):
-        text_rect = text.get_rect(center=(x, y))
-        screen.blit(text, text_rect)
-"""
+    def funktio(self):
+        if self.name == "ylänappi":
+            print("Painoit ylempää nappia.")
+        if self.name == "alanappi":
+            print("Painoit alempaa nappia.")
+
+ylänappi = MENUBUTTON("ylänappi", "Oon ylempänä", screenx / 2, screeny / 4)
+alanappi = MENUBUTTON("alanappi", "Oon alempana", screenx / 2, screeny / 2)
 
 
+#Päälooppi
 while True:
+    #Eventloop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if text_rect.collidepoint(pygame.mouse.get_pos()):
-                print("KOSKEE!")
+            for instance in MENUBUTTON.instances:
+                if instance.text_rect.collidepoint(pygame.mouse.get_pos()):
+                    instance.funktio()
 
-    menufont = pygame.font.SysFont("Comic Sans", 35, True)
-    text = menufont.render("Paina mua!", True, "WHITE")                  #tekee tekstistä surfacen, koko päätellään fontin mukaan
-    text_rect = text.get_rect(center=(screenx/2, screeny/3))       #tekee text-surfacen kokoinen suorakulmio ja laitetaan se tiettyyn kohtaan
-    screen.blit(text, text_rect)                                   #piirretään "text"-pinta "text_rect" kulmion sijaintiin.
-
-
+            """
+            if ylänappi.text_rect.collidepoint(pygame.mouse.get_pos()):
+                ylempinappi()
+            if alanappi.text_rect.collidepoint(pygame.mouse.get_pos()):
+                alempinappi()
+            """
 
     pygame.display.update()
