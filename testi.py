@@ -1,12 +1,14 @@
-filtered_airports = (1, 2, 3, 4, 5)
+filtered_airports = [(1, "kentän nimi"),(2, "asdf"),(3, "asdf"),(4, "asdf"),(5, "asdf")]
 
+print("Olet lentokentällä X. Tehtäväsi on Y.")
 
-
-
-def jatkolento():
+def liike():
     for i in filtered_airports:
-        print(*filtered_airports[i])
-        input("Valitse lentokenttä: ")
+        print(*i)
+        input("Valitse seuraava kohde: ")
+    return(f"lennetään kohteeseen {filtered_airports - 1}...")
+        # tähän jotain lisää
+liike()
 
 # tässä poistetaan näkyvistä jo vierailtu lentokenttä
 
