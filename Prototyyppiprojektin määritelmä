@@ -1,23 +1,16 @@
-Rajataan prototyyppi seuraavanlaisesti:
-
-Kaksi mannerta
-    Eurooppa
-    Afrikka
-
-Pelaajan tiedot tallentuu tietokantaan pelin loppuessa
-    nimi
-    pistemäärä
-
+PROTO TODO
 Mantereen sisällä vaaditut tehtävät
-    jotain kysymyksiä johon vaaditaan input?
+    jotain kivoja trivia-monivalinta juttuja?
+        oikeet vastaukset yhdessä listassa ja vääräv vastaukset toisessa
+        sit otetaan oikeesta ja väärästä listasta vastauksia ja inputilla valitaan
+    pelaaja valitsee aihealueen
+    oikeasta vastauksesta saa pisteitä
+        peräkkäisistä oikeista vastauksista saa kertoimen
 
-Pelaaja voi valita lentokoneen
-    pieni ja suuri
+Miten peli loppuu?
+    Kaikista aihealueista vastattu kysymys oikein
+        FINAL BOSS KYSYMYS johon oikein vastatessa voittaa pelin
+            kysymyksen antama pistemäärä laskee eksponentiaalisesti vääristä vastauksista
 
-Lentokenttien karsimiseen algoritmi
-..
 
-
-vesipullo
-omena
-kaspar
+Menu kiinni peliin et se alkaa
