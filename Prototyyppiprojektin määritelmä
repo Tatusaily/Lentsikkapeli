@@ -1,23 +1,9 @@
-Rajataan prototyyppi seuraavanlaisesti:
-
-Kaksi mannerta
-    Eurooppa
-    Afrikka
-
-Pelaajan tiedot tallentuu tietokantaan pelin loppuessa
-    nimi
-    pistemäärä
-
+TODO
 Mantereen sisällä vaaditut tehtävät
     jotain kysymyksiä johon vaaditaan input?
+    jotain kivoja trivia-monivalinta juttuja?
+        oikeet vastaukset yhdessä listassa ja vääräv vastaukset toisessa
+        sit otetaan oikeesta ja väärästä listasta vastauksia ja inputilla valitaan
 
-Pelaaja voi valita lentokoneen
-    pieni ja suuri
-
-Lentokenttien karsimiseen algoritmi
-..
-
-
-vesipullo
-omena
-kaspar
+Miten peli loppuu?
+Opintotuki
