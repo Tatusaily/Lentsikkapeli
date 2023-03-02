@@ -24,10 +24,11 @@ def uusipeli():
             kursori.execute(query)
             break
 
-    # Randomoidaan ne kentät ja tallennetaan ne jotenkin tietokantaan.
+    # Randomoidaan ne kentät ja tallennetaan ne jotenkin tietokantaan. Tää ottaa kaikki kenttätyypit
     query = f"SELECT ident FROM airport WHERE continent= 'EU' AND(NOT iso_country = 'RU');"
     kursori.execute(query)
     kentät = kursori.fetchall()
+    global filtered_airports
     filtered_airports = random.sample(kentät, 5)
     query = f"SELECT id FROM game WHERE screen_name = '{pelaajanimi}' AND password = '{salasana}';"
     kursori.execute(query)
@@ -39,16 +40,35 @@ def uusipeli():
     kursori.close()
     yhteys.close()
     return
+
 def jatkapeli():
     print("JATKAPELI")
     # Pelaaja syöttää nimen, jos nimi on tietokannassa niin:
         # Pelaaja syöttää salasanan tai poistuu takaisin menuun
-    pelaajanimi = input("Anna käyttäjänimi: ")
-    salasana = input("Anna salasana: ")
+    while True:
+        pelaajanimi = input("Anna käyttäjänimi: ")
+        salasana = input("Anna salasana: ")
+        yhteys = mysql.connector.connect(
+            host='localhost', port=3306,
+            database='flight_game', user='user1',
+            password='sala1', autocommit=True)
+        kursori = yhteys.cursor()
+        query = f"SELECT screen_name, password FROM game WHERE screen_name = '{pelaajanimi}';"
+        kursori.execute(query)
+        tulos = kursori.fetchall()
+        for tunnus in tulos:
+            if tunnus[0] == pelaajanimi and tunnus[1] == salasana:
+                oikein = True
+        if oikein == True: break
+        else:
+            print("Väärä tunnus tai salasana")
+    # Tässä vaihessa tunnus on varmistettu
     return
+
 def highscore():
     print("HIGHSCORE")
     return
+
 def päämenu():
     print("TERVETULOA LENTOPELIIN!\n"
           "1: Aloita uusi peli.\n"
@@ -58,6 +78,9 @@ def päämenu():
     valinta = input()
     if valinta == "1":
         uusipeli()
+        print("Uusi tunnus luotu.")
+        print(filtered_airports)
+        gamestate = "jatkapeli"
     elif valinta == "2":
         jatkapeli()
     elif valinta == "3":
@@ -65,10 +88,12 @@ def päämenu():
     elif valinta == "4":
         gameRunning = False
         quit()
+
 def save():
     # Jos pelaajan nimi ja salasana on tietokannassa niin tallennetaan edistys
     # Jos ei löydy, niin luodaan uusi rivi
     return
+
 
 # Vakiot
 
@@ -83,6 +108,5 @@ while gameRunning == True:
         päämenu()
     elif gamestate == "uusipeli":
         uusipeli()
-        print("Uusi tunnus luotu.")
-    elif gamestate == "vanhapeli":
+    elif gamestate == "jatkapeli":
         jatkapeli()
