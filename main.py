@@ -97,7 +97,6 @@ def save():
 
 # Vakiot
 
-
 # Alkaa
 gamestate = "päämenu"
 
