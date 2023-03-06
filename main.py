@@ -109,30 +109,46 @@ def jatkapeli():
 
 
 def pelaajaliike():
+    global aihealueet
+    global aihealue
     global P_location
-    #TODO tää funktio kokonaan :(
-    #pelaaaja on jossain ja se menee johonnkin.
-    #menon jälkeen tulee kyssäri?
     uusilocation = str(input("Anna uusi location"))
-
-    # kyssät tähän
-    if kyssäfunktio() == True:
+    aihealue = str.lower(input(f"Jäljellä olevat aihealueet: {aihealueet}\n"
+                               f"Valitse aihealue: "))
+    if kyssäfunktio(aihealue) == True:
         points += 100
         print("Vastaus oikein :)")
+        aihealueet.remove(aihealue)
         P_location = uusilocation
     else:
         points -= 1
         print("Vastaus väärin :(")
         P_location = random.sample(P_kentat, 1)
+
     return
 
 
 def kyssäfunktio():
     oikein = False
-    # TODO: tähän kysymyksiä tupleina jotka on stringissä?
     # kysymystuple on -> ("missä jorma on?", Kotona, Lentokentällä, Ulkona, Piilossa, 2)
     # kyslista = [(kystuple),(kystuple),(kystuple)]
+    his_kyslista = []
+    geo_kyslista = []
+    pop_kyslista = [("Missä jOrma on?", "Kotona", "Lentokentällä", "Ulkona", "Piilossa", 2),
+                ("Missä Matti on?", "Kotona", "Lentokentällä", "Ulkona", "Piilossa", 2),
+                ("Missä Heikki on?", "Kotona", "Lentokentällä", "Ulkona", "Piilossa", 2)]
+    finalboss_kyslista = []
 
+    #TODO: IF/ELSE lause joka ottaa valitun aihealueen ja kysyy siitä ne kysymykset!
+
+    kysymys = random.choice(his_kyslista)
+    aakkoset = ["a", "b", "c", "d"]
+    print(kysymys[0])
+    print(f"A) {kysymys[1]}     B) {kysymys[2]}\n"
+          f"C) {kysymys[3]}     D) {kysymys[4]}")
+    vastaus = str.lower(input())
+    if vastaus.capitalize() == kysymys[kysymys[5]] or vastaus == aakkoset[kysymys[5]-1]:
+        oikein = True
     return oikein
 
 
@@ -155,6 +171,7 @@ def päämenu():
         print(filtered_airports)
         gamestate = "jatkapeli"
     elif valinta == 2:
+        #TODO: pelaajan SQL Dump tähän
         if tunnustarkistus() == True:
             # Tunnus on oikein ja voidaan jatkaa
             print("Oikein! :)")
@@ -170,12 +187,14 @@ def päämenu():
 
 
 def save():
-    # Jos pelaajan nimi ja salasana on tietokannassa niin tallennetaan edistys
-    # Jos ei löydy, niin luodaan uusi rivi
+    #TODO: pelajan tiedot tietokantaan
     return
 
 
-# Vakiot
+# Vakiot (Globaalit)
+#TODO: jatkapeli():stä ne globaalit tähän
+aihealue = ""
+aihealueet = ["Populaatikulttuuri", "Historia", "Maantieto"]
 pelaajanimi = ""
 salasana = ""
 # Alkaa
