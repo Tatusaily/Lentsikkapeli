@@ -73,38 +73,48 @@ def jatkapeli():
         database='flight_game', user='user1',
         password='sala1', autocommit=True)
     kursori = yhteys.cursor()
+
+    # Kivat global muuttujat :)
     global pelaajanimi
+    global pelaajaid
+    global points
+    global P_location
+    global salasana
+    global P_kentat
+
     """
-    jos pelaajan sijainti on 0
+    jos pelaajan sijainti on NULL
         laitetaan käyttäjä satunnaiselle kentälle randomport-taulusta
     jos ei
         käyttäjä jatkaa siitä missä on (game/location)
         muistuttaa
     """
+
     query = f"SELECT * FROM GAME WHERE screen_name = '{pelaajanimi}';"
     kursori.execute(query)
     tulos = kursori.fetchone()
 
-    # Tehdään kaikista pelaajan tiedoista globaaleja muuttujia myöhempää varten.
-    global pelaajaid
+    # Talletaan queryllä saadut tiedot pelaaja tietoihin
     pelaajaid = tulos[0]
-    global points
     points = tulos[1]
-    global P_location
     P_location = tulos[2]
     pelaajanimi = tulos[3]
-    global salasana
     salasana = tulos[4]
+
+    # Otetaan pelaajan random kentät ja laitetaan ne muuttujaan muistiin
     query = f"SELECT ICAO FROM randomport WHERE pelaaja_id = '{pelaajaid}';"
-    global P_kentat
-    P_kentat = []
     kursori.execute(query)
     kentat = kursori.fetchall()
+    P_kentat = []
     for kentta in kentat:
         P_kentat.append(kentta[0])
 
-    if P_location == 0:
+    # Jos on ihan uusi tunnus, niin asetetaan pelaaja random kentälle
+    if P_location == "" or P_location == None:
         P_location = random.sample(P_kentat, 1)
+
+    print(f"Hei, {pelaajanimi}. Sinulla on {points} pistettä.")
+    print(f'Olet kentällä "{P_location}".')
     return
 
 
@@ -112,7 +122,10 @@ def pelaajaliike():
     global aihealueet
     global aihealue
     global P_location
-    uusilocation = str(input("Anna uusi location"))
+    global P_kentat
+
+    #TODO Mitä vittua?
+    uusilocation = str(input("Mihin lentokenttään haluat mennä?"))
     aihealue = str.lower(input(f"Jäljellä olevat aihealueet: {aihealueet}\n"
                                f"Valitse aihealue: "))
     if kyssäfunktio(aihealue) == True:
@@ -121,7 +134,7 @@ def pelaajaliike():
         aihealueet.remove(aihealue)
         P_location = uusilocation
     else:
-        points -= 1
+        points -= 10
         print("Vastaus väärin :(")
         P_location = random.sample(P_kentat, 1)
 
@@ -167,17 +180,18 @@ def päämenu():
     valinta = int(input())
     if valinta == 1:
         uusipeli()
-        print("Uusi tunnus luotu.")
-        print(filtered_airports)
+        print("Uusi tunnus luotu.\n")
+        print(f"DEBUG: {filtered_airports}")
+        #TODO: Tähän vois laittaa jotain pelin aloitus tekstiä
         gamestate = "jatkapeli"
     elif valinta == 2:
-        #TODO: pelaajan SQL Dump tähän
+        # TODO: pelaajan SQL Dump tähän. Ei kyl tarvii? Ne näyttää tulevan ihan kivasti kun ne alustetaan tossa alhaalla.
         if tunnustarkistus() == True:
             # Tunnus on oikein ja voidaan jatkaa
-            print("Oikein! :)")
+            print("DEBUG Tunnus oikein! :)")
             gamestate = "jatkapeli"
         else:
-            print("Tunnus väärin! :(")
+            print("DEBUG Tunnus väärin! :(")
 
     elif valinta == 3:
         highscore()
@@ -192,11 +206,12 @@ def save():
 
 
 # Vakiot (Globaalit)
-#TODO: jatkapeli():stä ne globaalit tähän
-aihealue = ""
+# Alustetaan pelaaajalle arvot
 aihealueet = ["Populaatikulttuuri", "Historia", "Maantieto"]
-pelaajanimi = ""
-salasana = ""
+pelaajanimi = salasana = aihealue = P_location = ""
+pelaajaid = points = 0
+P_kentat = []
+
 # Alkaa
 gamestate = "päämenu"
 
