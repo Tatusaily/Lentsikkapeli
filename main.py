@@ -43,6 +43,8 @@ def uusipeli():
     kursori.close()
     yhteys.close()
     return
+
+
 def tunnustarkistus():
     print("TUNNUSTARKISTUS")
     oikein = False
@@ -63,6 +65,8 @@ def tunnustarkistus():
             oikein = True
     # Tässä vaihessa tunnus on varmistettu
     return oikein
+
+
 def jatkapeli():
     yhteys = mysql.connector.connect(
         host='localhost', port=3306,
@@ -124,8 +128,12 @@ def pelaajaliike():
 
 
 def kyssäfunktio():
+    oikein = False
+    # TODO: tähän kysymyksiä tupleina jotka on stringissä?
+    # kysymystuple on -> ("missä jorma on?", Kotona, Lentokentällä, Ulkona, Piilossa, 2)
+    # kyslista = [(kystuple),(kystuple),(kystuple)]
 
-    return
+    return oikein
 
 
 def highscore():
