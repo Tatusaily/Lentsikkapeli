@@ -182,8 +182,13 @@ def päämenu():
         uusipeli()
         print("Uusi tunnus luotu.\n")
         print(f"DEBUG: {filtered_airports}")
-        #TODO: Tähän vois laittaa jotain pelin aloitus tekstiä
-        gamestate = "jatkapeli"
+        valinta = str(input("Haluatko [P]alata takaisin valikkoon vai [J]atkaa peliä?"))
+        if valinta == "J":
+            gamestate = "jatkapeli"
+            # TODO: Tähän vois laittaa jotain pelin aloitus tekstiä
+        else:
+            gamestate = "päämenu"
+
     elif valinta == 2:
         # TODO: pelaajan SQL Dump tähän. Ei kyl tarvii? Ne näyttää tulevan ihan kivasti kun ne alustetaan tossa alhaalla.
         if tunnustarkistus() == True:
