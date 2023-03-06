@@ -1,11 +1,11 @@
 PROTO TODO
+Ctrl + F TODO
 Mantereen sisällä vaaditut tehtävät
     jotain kivoja trivia-monivalinta juttuja?
-        oikeet vastaukset yhdessä listassa ja vääräv vastaukset toisessa
-        sit otetaan oikeesta ja väärästä listasta vastauksia ja inputilla valitaan
     pelaaja valitsee aihealueen
-    oikeasta vastauksesta saa pisteitä
-        peräkkäisistä oikeista vastauksista saa kertoimen
+        aihealue algoritmi:
+        ["aihealue"_kyslista]
+    pelaajan suoritetut aihealueet tallentuu tietokantaan
 
 Miten peli loppuu?
     Kaikista aihealueista vastattu kysymys oikein
@@ -13,4 +13,8 @@ Miten peli loppuu?
             kysymyksen antama pistemäärä laskee eksponentiaalisesti vääristä vastauksista
 
 
-Menu kiinni peliin et se alkaa
+Menu kiinni "peliin" et se alkaa.
+
+TEHTY: oikeasta vastauksesta saa pisteitä
+            peräkkäisistä oikeista vastauksista saa kertoimen
+

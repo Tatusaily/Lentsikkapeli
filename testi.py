@@ -7,7 +7,7 @@ def liike():
         print(*i)
         input("Valitse seuraava kohde: ")
     return(f"lennetään kohteeseen {filtered_airports - 1}...")
-        # tähän jotain lisää
+    # tähän jotain lisää
 liike()
 
 # tässä poistetaan näkyvistä jo vierailtu lentokenttä
@@ -28,3 +28,6 @@ def lähimmät():
     return (lista)
 lahimmat = lähimmät()
 print(lahimmat)
+
+kyssäri = (1:ads,2:ads,3:asd,4:asd,0)
+vastaus = "ads",a,1-1
