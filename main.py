@@ -171,6 +171,8 @@ def highscore():
 
 def päämenu():
     global gamestate
+    global gameRunning
+    global valinta
     print("TERVETULOA LENTOPELIIN!\n"
           "1: Aloita uusi peli.\n"
           "2: Jatka vanhaa peliä.\n"
@@ -191,8 +193,7 @@ def päämenu():
     elif valinta == 4:      # Pelaaja menee menusta pois. Peliä ei ole kesken joten ei tarvitse tallentaa.
         gameRunning = False
         quit()
-
-
+    return
 def save():
     #TODO: pelajan tiedot tietokantaan
     # Varmaan voi vaan kattoo tosta noi alustetut arvot alempaa ja
@@ -220,7 +221,7 @@ gamestate = "päämenu"
 
 # Pää looppi
 gameRunning = True
-if gameRunning == True:
+while gameRunning == True:
     if gamestate == "päämenu":
         päämenu()   # Päämenusta voi aloittaa uuden pelin tai jatkaa vanhaa.
         # Tavallaan tää looppi on myös eräänlainen päämenu. Vähän hassua et se on myös funktio.
@@ -247,8 +248,9 @@ if gameRunning == True:
         elif valinta == 3:
             gameRunning = False
         else: print("En ymmärtänyt.")
-elif gameRunning == False:      # Pelaaja valitsee poistumisen. Tallennetaan ja poistutaan.
-    print("Tallennetaan ja poistutaan.")
-    save()
-    print(f"Näkemiin, {pelaajanimi}.")
-    quit()
+
+# Pelaaja valitsee poistumisen. Tallennetaan ja poistutaan.
+print("Tallennetaan ja poistutaan.")
+save()
+print(f"Näkemiin, {pelaajanimi}.")
+quit()
