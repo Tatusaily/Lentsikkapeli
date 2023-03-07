@@ -116,7 +116,8 @@ def pelaajaliike():
     global P_location
     global P_kentat
     global points
-    #TODO: anna käyttäjälle lentokentät
+    #TODO: Vois printtaa kentät nätimmin
+    print(P_kentat)
     uusilocation = str(input("Mihin lentokenttään haluat mennä?"))
     if kyssäfunktio() == True:
         points += 15
