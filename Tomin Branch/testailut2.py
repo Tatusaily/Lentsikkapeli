@@ -3,8 +3,8 @@ import pygame
 pygame.init()
 
 # reso aka määritellään näytön "pinta-ala" - en tiedä käyttääkö pygame pikseleitä mut näil mennää
-screen_width = 1920
-screen_height = 1080
+screen_width = 1000
+screen_height = 800
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Pelin nimi
@@ -25,7 +25,7 @@ def main_menu():
     new_game_text = font.render("Uusi Peli", True, white)
     load_game_text = font.render("Lataa Peli", True, white)
     save_game_text = font.render("Tallenna Peli", True, white)
-    high_scores_text = font.render("Näytä Huipputulokset", True, white)
+    high_scores_text = font.render("Huipputulokset", True, white)
     quit_text = font.render("Lopeta", True, white)
 
     # tekstin sijainnit ruudulla tähän
