@@ -19,7 +19,6 @@ def uusipeli():
         query = f"SELECT count(*) as count FROM game WHERE screen_name = '{pelaajanimi}';"
         kursori.execute(query)
         onkonimi = kursori.fetchone()
-        #TODO: Nimi/Salasana kombo
         if onkonimi[0] > 0:
             print("Pelaajanimi on jo käytössä. Yritä jotakin toista.")
         else:
