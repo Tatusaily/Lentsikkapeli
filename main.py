@@ -36,7 +36,7 @@ def uusipeli():
     kursori.execute(query)
     pelaajaID = kursori.fetchone()
     for airport in filtered_airports:
-        query = f"REPLACE INTO randomport(pelaaja_id, ICAO) VALUES ('{pelaajaID[0]}', '{airport[0]}');"
+        query = f"REPLACE INTO randomport(id, ICAO) VALUES ('{pelaajaID[0]}', '{airport[0]}');"
         kursori.execute(query)
 
     kursori.close()
@@ -100,7 +100,7 @@ def jatkapeli():
         P_location = (P_location, tulos[0])
 
     # Otetaan pelaajan random kentät ja laitetaan ne muuttujiin.
-    query = f"SELECT ICAO, name FROM randomport, airport WHERE randomport.pelaaja_id = '{pelaajaid}'" \
+    query = f"SELECT ICAO, name FROM randomport, airport WHERE randomport.id = '{pelaajaid}'" \
             f"AND airport.ident = randomport.ICAO;"
     kursori.execute(query)
     kentat = kursori.fetchall()
@@ -143,7 +143,6 @@ def pelaajaliike():
     if kyssäfunktio() == True:
         points += 15
         print("Vastaus oikein :)")
-        P_location = (uusilocation,dgjioaagjïp)
 
 
     else:
@@ -170,6 +169,7 @@ def kyssäfunktio():
     if aihevalinta > len(aihealueet):
         aihevalinta = len(aihealueet)
     kyssälista = aihealueet[aihevalinta]
+    valittu = kyssälista[0]
     kyssälista = kyssälista[1]
 
     kysymys = random.choice(kyssälista)
@@ -180,6 +180,7 @@ def kyssäfunktio():
     vastaus = str.lower(input())
     if vastaus.capitalize() == kysymys[kysymys[5]] or vastaus == aakkoset[kysymys[5]-1]:
         oikein = True
+        vastatut.append(valittu)
         aihealueet.remove(aihealueet[aihevalinta])  # jos vastaus on oikein, poistetaan aihe listasta
     return oikein
 
@@ -234,6 +235,8 @@ def save():
     global points
     global P_location
     global pelaajanimi
+    global vastatut
+    global pelaajaid
     yhteys = mysql.connector.connect(
         host='localhost',
         port=3306,
@@ -244,6 +247,9 @@ def save():
     kenttanimi = P_location[0]
     query = f"update game set points = {points}, location = '{kenttanimi}' where screen_name = '{pelaajanimi}';"
     kursori.execute(query)
+    for kateg in vastatut:
+        query = f"REPLACE INTO category(id, aihe) VALUES ('{pelaajaid}', '{kateg}');"
+        kursori.execute(query)
     print("Peli tallennettu.")
     yhteys.close()
     kursori.close()
@@ -273,6 +279,7 @@ aihealueet = [("Pop-kulttuuri", pop_kyslista), ("Historia", his_kyslista),
 pelaajanimi = salasana = aihealue = P_location = ""
 pelaajaid = points = 0
 P_kentat = []
+vastatut = []
 
 # Alkaa
 gamestate = "päämenu"
