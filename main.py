@@ -172,11 +172,20 @@ def kyssäfunktio():
 
 
 def highscore():
-    #TODO: Tää loppuun
-    # points on game-taulussa.
-    # Oisko: SELECT screen_name, points FROM game ORDER BY points desc LIMIT 10;
-    # sit print jotenkin kivasti
-    print("HIGHSCORE")
+    print("HIGHSCORES")
+    yhteys = mysql.connector.connect(
+        host='localhost',
+        port=3306,
+        database='flight_game',
+        user='user1',
+        password='sala1', autocommit=True)
+    kursori = yhteys.cursor()
+    query = f"select screen_name, points from game order by points desc limit 10;"
+    kursori.execute(query)
+    highscore = kursori.fetchall()
+    print(highscore)
+    yhteys.close()
+    kursori.close()
     return
 
 
