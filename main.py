@@ -230,7 +230,7 @@ finalboss_kyslista = [("Mitä kissa sanoo?", "Miau", "Mur", "HAUHAU", "no cap on
 # aihealueet on lista jossa on aihealueiden nimi, ja sitten osoite siihen listaan jossa ne kyssät on
 # muodossa ("nimi", lista)
 # tää on sen takii et kyssäfunktiossa voidaan sit kysyy dynaamisesti aihealue ja osataan ettii se lista
-aihealueet = [("Populaatikulttuuri", pop_kyslista), ("Historia", his_kyslista),
+aihealueet = [("Pop-kulttuuri", pop_kyslista), ("Historia", his_kyslista),
               ("Maantieto", geo_kyslista)]
 pelaajanimi = salasana = aihealue = P_location = ""
 pelaajaid = points = 0
