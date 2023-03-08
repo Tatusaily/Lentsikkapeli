@@ -89,13 +89,16 @@ def jatkapeli():
 
     pelaajaid = tulos[0]
     points = tulos[1]
-    P_location = tulos[2]
+    if tulos[2] != "" or tulos[2] is not None:
+        P_location = tulos[2]
     pelaajanimi = tulos[3]
     salasana = tulos[4]
-    query = f"SELECT name from airport where ident = '{P_location}';"
-    kursori.execute(query)
-    tulos = kursori.fetchone()
-    P_location = (P_location, tulos[0])
+    if P_location is not None and P_location != "":
+        query = f"SELECT name from airport where ident = '{P_location}';"
+        kursori.execute(query)
+        tulos = kursori.fetchone()
+        P_location = (P_location, tulos[0])
+
     # Otetaan pelaajan random kentät ja laitetaan ne muuttujiin.
     query = f"SELECT ICAO, name FROM randomport, airport WHERE randomport.pelaaja_id = '{pelaajaid}'" \
             f"AND airport.ident = randomport.ICAO;"
@@ -106,8 +109,12 @@ def jatkapeli():
         P_kentat.append(kentta)
 
     # Jos on ihan uusi tunnus, niin asetetaan pelaaja random kentälle
-    if P_location[0] == "" or P_location is None:
+    if P_location is None:
         P_location = random.sample(P_kentat, 1)
+        P_location = P_location[0]
+    elif P_location[0] == "":
+        P_location = random.sample(P_kentat, 1)
+        P_location = P_location[0]
 
     print(f"Hei, {pelaajanimi}. Sinulla on {points} pistettä.")
     print(f'Olet kentällä "{P_location}".')
@@ -120,7 +127,8 @@ def pelaajaliike():
     global P_location
     global P_kentat
     global points
-    #TODO: Vois printtaa kentät nätimmin
+
+    print(f"Olet kentällä: {P_location}")
     print(P_kentat)
     print(f"||{'Valinta nro.':^15}|{'Kentän nimi':^20}|{'ICAO-koodi:':^15}||")
     print(f"{'='*56}")
@@ -135,7 +143,9 @@ def pelaajaliike():
     if kyssäfunktio() == True:
         points += 15
         print("Vastaus oikein :)")
-        P_location = uusilocation
+        P_location = (uusilocation,dgjioaagjïp)
+
+
     else:
         points -= 10
         print("Vastaus väärin :(")
@@ -220,10 +230,23 @@ def päämenu():
         quit()
     return
 def save():
-    #TODO: pelajan tiedot tietokantaan
-    # Varmaan voi vaan kattoo tosta noi alustetut arvot alempaa ja
-    # Syöttää ne tietokantaan. Pitää kattoo et miten ne saa oikeelle paikalle.
-
+    print("Tallennetaan...")
+    global points
+    global P_location
+    global pelaajanimi
+    yhteys = mysql.connector.connect(
+        host='localhost',
+        port=3306,
+        database='flight_game',
+        user='user1',
+        password='sala1', autocommit=True)
+    kursori = yhteys.cursor()
+    kenttanimi = P_location[0]
+    query = f"update game set points = {points}, location = '{kenttanimi}' where screen_name = '{pelaajanimi}';"
+    kursori.execute(query)
+    print("Peli tallennettu.")
+    yhteys.close()
+    kursori.close()
     return
 
 
@@ -269,8 +292,8 @@ while gameRunning == True:
         else:
             gamestate = "päämenu"
     elif gamestate == "jatkapeli":
-        # TODO: Tähän vois ehkä laittaa jotain orientaatio tekstiä pelaajalle
-        jatkapeli()             # Pelaajan tiedot ladataan tietokannasta
+        if pelaajaid == 0:
+            jatkapeli()             # Pelaajan tiedot ladataan tietokannasta
         print("Mitä haluat tehdä?\n"
               "1: Liiku uudelle lentokentälle.\n"
               "2: Poistu päävalikkoon.\n"
