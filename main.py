@@ -219,7 +219,19 @@ def päämenu():
 
 
 def save():
-    #TODO: pelajan tiedot tietokantaan
+    print("Tallennetaan...")
+    yhteys = mysql.connector.connect(
+        host='localhost',
+        port=3306,
+        database='flight_game',
+        user='user1',
+        password='sala1', autocommit=True)
+    kursori = yhteys.cursor()
+    query = f"update game set points where screen_name = '{pelaajanimi}'";
+    kursori.execute(query)
+    print("Peli tallennettu.")
+    yhteys.close()
+    kursori.close()
     return
 
 
