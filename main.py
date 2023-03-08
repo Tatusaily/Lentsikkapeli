@@ -157,24 +157,29 @@ def pelaajaliike():
 def kyssäfunktio():
     oikein = False
     global aihealueet
+    global points
+    global gamestate
     # kysymystuple on -> ("missä jorma on?", Kotona, Lentokentällä, Ulkona, Piilossa, 2)
     # kyslista = [(kystuple),(kystuple),(kystuple)]
     # kysymyslistat siirretty pääohjelmaan
-    print("Valitse aihealue:")
-    n = 0
-    for aihe in aihealueet:
-        print(f"{n + 1}:{aihe[0]}")
-        n += 1
-    aihevalinta = abs(int(input()) - 1)
-    if aihevalinta > len(aihealueet):
-        aihevalinta = len(aihealueet)
-    kyssälista = aihealueet[aihevalinta]
-    valittu = kyssälista[0]
-    kyssälista = kyssälista[1]
-
-    kysymys = random.choice(kyssälista)
+    finalboss = False
     if len(aihealueet) == 0:
         kysymys = random.choice(finalboss_kyslista)
+        finalboss = True
+    else:
+        print("Valitse aihealue:")
+        n = 0
+        for aihe in aihealueet:
+            print(f"{n + 1}:{aihe[0]}")
+            n += 1
+        aihevalinta = abs(int(input()) - 1)
+        if aihevalinta > len(aihealueet):
+            aihevalinta = len(aihealueet)
+        kyssälista = aihealueet[aihevalinta]
+        valittu = kyssälista[0]
+        kyssälista = kyssälista[1]
+        kysymys = random.choice(kyssälista)
+
     aakkoset = ["a", "b", "c", "d"]
     print(kysymys[0])
     print(f"A) {kysymys[1]}     B) {kysymys[2]}\n"
@@ -184,6 +189,11 @@ def kyssäfunktio():
         oikein = True
         vastatut.append(valittu)
         aihealueet.remove(aihealueet[aihevalinta])  # jos vastaus on oikein, poistetaan aihe listasta
+    if oikein == True and finalboss == True:
+        print("WINNER WINNER CHICKEN DINNER!")
+        points += 200
+        gamestate = "mainmenu"
+        highscore()
     return oikein
 
 
