@@ -196,10 +196,9 @@ def highscore():
     kursori = yhteys.cursor()
     query = f"select screen_name, points from game order by points desc limit 10;"
     kursori.execute(query)
-    pisteet = kursori.fetchall()
-    print(pisteet)
-    for piste in pisteet:
-        print(f"")
+    highscore = kursori.fetchall()
+    print(highscore)
+
     yhteys.close()
     kursori.close()
     return
@@ -217,6 +216,19 @@ def päämenu():
     valinta = int(input())
     if valinta == 1:
         gamestate = "uusipeli"
+        uusipeli()
+        print("Uusi tunnus luotu.\n")
+        print(f"DEBUG: {filtered_airports}")
+        valinta = str(input("Haluatko [P]alata takaisin valikkoon vai [J]atkaa peliä?"))
+        if valinta == "J":
+            gamestate = "jatkapeli"
+            print("Tervetuloa pelaamaan lentsikkapeliä! Pelin tavoite on vastata oikein jokaisen aihealueen kysymykseen, \+
+                  "ja kerätä mahdollisimman paljon pisteitä. Oikeasta vastsauksesta ansaitsee pisteitä, ja lento sujuu vaivatta \+"
+                  "määränpäähäsi. Väärästä vastauksesta menettää pisteitä, sekä lentoa saattaa kohdata epäonni!"
+            print("Onnea matkaan!")
+        else:
+            gamestate = "päämenu"
+
     elif valinta == 2:
         if tunnustarkistus() == True:
             # Tunnus on oikein ja voidaan jatkaa
@@ -237,6 +249,7 @@ def save():
     global pelaajanimi
     global vastatut
     global pelaajaid
+
     yhteys = mysql.connector.connect(
         host='localhost',
         port=3306,
