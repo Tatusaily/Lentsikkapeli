@@ -94,12 +94,13 @@ def jatkapeli():
     salasana = tulos[4]
 
     # Otetaan pelaajan random kentät ja laitetaan ne muuttujiin.
-    query = f"SELECT ICAO FROM randomport WHERE pelaaja_id = '{pelaajaid}';"
+    query = f"SELECT ICAO, name FROM randomport, airport WHERE randomport.pelaaja_id = '{pelaajaid}'" \
+            f"AND airport.ident = randomport.ICAO;"
     kursori.execute(query)
     kentat = kursori.fetchall()
     P_kentat = []
     for kentta in kentat:
-        P_kentat.append(kentta[0])
+        P_kentat.append(kentta)
 
     # Jos on ihan uusi tunnus, niin asetetaan pelaaja random kentälle
     if P_location == "" or P_location is None:
@@ -118,7 +119,16 @@ def pelaajaliike():
     global points
     #TODO: Vois printtaa kentät nätimmin
     print(P_kentat)
-    uusilocation = str(input("Mihin lentokenttään haluat mennä?"))
+    print(f"||{'Valinta nro.':^15}|{'Kentän nimi':^20}|{'ICAO-koodi:':^15}||")
+    print(f"{'='*56}")
+    n = 1
+    for kenttä in P_kentat:
+        nimi = kenttä[1]
+        nimi = (nimi[:17] + "...") if len(nimi) > 20 else nimi
+        print(f"||{str(n)+'.':^15}|{nimi:^20}|{kenttä[0]:^15}||")
+        n += 1
+
+    uusilocation = str(input("Mille lentokentälle haluat mennä?"))
     if kyssäfunktio() == True:
         points += 15
         print("Vastaus oikein :)")
