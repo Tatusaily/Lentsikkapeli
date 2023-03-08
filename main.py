@@ -19,7 +19,6 @@ def uusipeli():
         query = f"SELECT count(*) as count FROM game WHERE screen_name = '{pelaajanimi}';"
         kursori.execute(query)
         onkonimi = kursori.fetchone()
-        #TODO: Nimi/Salasana kombo
         if onkonimi[0] > 0:
             print("Pelaajanimi on jo käytössä. Yritä jotakin toista.")
         else:
@@ -31,13 +30,13 @@ def uusipeli():
     query = f"SELECT ident, name FROM airport WHERE continent= 'EU' AND(NOT iso_country = 'RU');"
     kursori.execute(query)
     kentät = kursori.fetchall()
-    global filtered_airports
     filtered_airports = random.sample(kentät, 5)
+    print(f"DEBUG: filtered_airports: {filtered_airports}")
     query = f"SELECT id FROM game WHERE screen_name = '{pelaajanimi}' AND password = '{salasana}';"
     kursori.execute(query)
     pelaajaID = kursori.fetchone()
     for airport in filtered_airports:
-        query = f"REPLACE INTO randomport(pelaaja_id, ICAO) VALUES ('{pelaajaID[0]}', '{airport[0]}');"
+        query = f"REPLACE INTO randomport(id, ICAO) VALUES ('{pelaajaID[0]}', '{airport[0]}');"
         kursori.execute(query)
 
     kursori.close()
@@ -82,36 +81,40 @@ def jatkapeli():
     global salasana
     global P_kentat
 
-    """
-    jos pelaajan sijainti on NULL
-        laitetaan käyttäjä satunnaiselle kentälle randomport-taulusta
-    jos ei
-        käyttäjä jatkaa siitä missä on (game/location)
-        muistuttaa
-    """
-
+    # Otetaan game taulusta pelaajan tiedot ja tallennetaan ne muuttujiin.
     query = f"SELECT * FROM GAME WHERE screen_name = '{pelaajanimi}';"
+
     kursori.execute(query)
     tulos = kursori.fetchone()
 
-    # Talletaan queryllä saadut tiedot pelaaja tietoihin
     pelaajaid = tulos[0]
     points = tulos[1]
-    P_location = tulos[2]
+    if tulos[2] != "" or tulos[2] is not None:
+        P_location = tulos[2]
     pelaajanimi = tulos[3]
     salasana = tulos[4]
+    if P_location is not None and P_location != "":
+        query = f"SELECT name from airport where ident = '{P_location}';"
+        kursori.execute(query)
+        tulos = kursori.fetchone()
+        P_location = (P_location, tulos[0])
 
-    # Otetaan pelaajan random kentät ja laitetaan ne muuttujaan muistiin
-    query = f"SELECT ICAO FROM randomport WHERE pelaaja_id = '{pelaajaid}';"
+    # Otetaan pelaajan random kentät ja laitetaan ne muuttujiin.
+    query = f"SELECT ICAO, name FROM randomport, airport WHERE randomport.id = '{pelaajaid}'" \
+            f"AND airport.ident = randomport.ICAO;"
     kursori.execute(query)
     kentat = kursori.fetchall()
     P_kentat = []
     for kentta in kentat:
-        P_kentat.append(kentta[0])
+        P_kentat.append(kentta)
 
     # Jos on ihan uusi tunnus, niin asetetaan pelaaja random kentälle
-    if P_location == "" or P_location == None:
+    if P_location is None:
         P_location = random.sample(P_kentat, 1)
+        P_location = P_location[0]
+    elif P_location[0] == "":
+        P_location = random.sample(P_kentat, 1)
+        P_location = P_location[0]
 
     print(f"Hei, {pelaajanimi}. Sinulla on {points} pistettä.")
     print(f'Olet kentällä "{P_location}".')
@@ -123,38 +126,53 @@ def pelaajaliike():
     global aihealue
     global P_location
     global P_kentat
+    global points
 
-    #TODO Mitä vittua?
-    uusilocation = str(input("Mihin lentokenttään haluat mennä?"))
-    aihealue = str.lower(input(f"Jäljellä olevat aihealueet: {aihealueet}\n"
-                               f"Valitse aihealue: "))
-    if kyssäfunktio(aihealue) == True:
-        points += 100
+    print(f"Olet kentällä: {P_location}")
+    print(P_kentat)
+    print(f"||{'Valinta nro.':^15}|{'Kentän nimi':^20}|{'ICAO-koodi:':^15}||")
+    print(f"{'='*56}")
+    n = 1
+    for kenttä in P_kentat:
+        nimi = kenttä[1]
+        nimi = (nimi[:17] + "...") if len(nimi) > 20 else nimi
+        print(f"||{str(n)+'.':^15}|{nimi:^20}|{kenttä[0]:^15}||")
+        n += 1
+
+    uusilocation = str(input("Mille lentokentälle haluat mennä?"))
+    if kyssäfunktio() == True:
+        points += 15
         print("Vastaus oikein :)")
-        aihealueet.remove(aihealue)
-        P_location = uusilocation
+
+
     else:
         points -= 10
         print("Vastaus väärin :(")
-        P_location = random.sample(P_kentat, 1)
+        if random.randint(0, 1) == 1:
+            print("Lennät pyörremyrskyyn ja joudut satunnaiselle lentokentälle.")
+            P_location = random.sample(P_kentat, 1)
 
     return
 
-
 def kyssäfunktio():
     oikein = False
+    global aihealueet
     # kysymystuple on -> ("missä jorma on?", Kotona, Lentokentällä, Ulkona, Piilossa, 2)
     # kyslista = [(kystuple),(kystuple),(kystuple)]
-    his_kyslista = []
-    geo_kyslista = []
-    pop_kyslista = [("Missä jOrma on?", "Kotona", "Lentokentällä", "Ulkona", "Piilossa", 2),
-                ("Missä Matti on?", "Kotona", "Lentokentällä", "Ulkona", "Piilossa", 2),
-                ("Missä Heikki on?", "Kotona", "Lentokentällä", "Ulkona", "Piilossa", 2)]
-    finalboss_kyslista = []
+    # kysymyslistat siirretty pääohjelmaan
+    print("Valitse aihealue:")
+    n = 0
+    for aihe in aihealueet:
+        print(f"{n + 1}:{aihe[0]}")
+        n += 1
+    aihevalinta = abs(int(input()) - 1)
+    if aihevalinta > len(aihealueet):
+        aihevalinta = len(aihealueet)
+    kyssälista = aihealueet[aihevalinta]
+    valittu = kyssälista[0]
+    kyssälista = kyssälista[1]
 
-    #TODO: IF/ELSE lause joka ottaa valitun aihealueen ja kysyy siitä ne kysymykset!
-
-    kysymys = random.choice(his_kyslista)
+    kysymys = random.choice(kyssälista)
     aakkoset = ["a", "b", "c", "d"]
     print(kysymys[0])
     print(f"A) {kysymys[1]}     B) {kysymys[2]}\n"
@@ -162,6 +180,8 @@ def kyssäfunktio():
     vastaus = str.lower(input())
     if vastaus.capitalize() == kysymys[kysymys[5]] or vastaus == aakkoset[kysymys[5]-1]:
         oikein = True
+        vastatut.append(valittu)
+        aihealueet.remove(aihealueet[aihevalinta])  # jos vastaus on oikein, poistetaan aihe listasta
     return oikein
 
 
@@ -178,6 +198,7 @@ def highscore():
     kursori.execute(query)
     highscore = kursori.fetchall()
     print(highscore)
+
     yhteys.close()
     kursori.close()
     return
@@ -185,6 +206,8 @@ def highscore():
 
 def päämenu():
     global gamestate
+    global gameRunning
+    global valinta
     print("TERVETULOA LENTOPELIIN!\n"
           "1: Aloita uusi peli.\n"
           "2: Jatka vanhaa peliä.\n"
@@ -192,6 +215,7 @@ def päämenu():
           "4: Poistu pelistä.")
     valinta = int(input())
     if valinta == 1:
+        gamestate = "uusipeli"
         uusipeli()
         print("Uusi tunnus luotu.\n")
         print(f"DEBUG: {filtered_airports}")
@@ -206,23 +230,26 @@ def päämenu():
             gamestate = "päämenu"
 
     elif valinta == 2:
-        # TODO: pelaajan SQL Dump tähän. Ei kyl tarvii? Ne näyttää tulevan ihan kivasti kun ne alustetaan tossa alhaalla.
         if tunnustarkistus() == True:
             # Tunnus on oikein ja voidaan jatkaa
             print("DEBUG Tunnus oikein! :)")
             gamestate = "jatkapeli"
         else:
             print("DEBUG Tunnus väärin! :(")
-
     elif valinta == 3:
         highscore()
-    elif valinta == 4:
+    elif valinta == 4:      # Pelaaja menee menusta pois. Peliä ei ole kesken joten ei tarvitse tallentaa.
         gameRunning = False
         quit()
-
-
+    return
 def save():
     print("Tallennetaan...")
+    global points
+    global P_location
+    global pelaajanimi
+    global vastatut
+    global pelaajaid
+
     yhteys = mysql.connector.connect(
         host='localhost',
         port=3306,
@@ -230,20 +257,42 @@ def save():
         user='user1',
         password='sala1', autocommit=True)
     kursori = yhteys.cursor()
-    query = f"update game set points where screen_name = '{pelaajanimi}'";
+    kenttanimi = P_location[0]
+    query = f"update game set points = {points}, location = '{kenttanimi}' where screen_name = '{pelaajanimi}';"
     kursori.execute(query)
+    for kateg in vastatut:
+        query = f"REPLACE INTO category(id, aihe) VALUES ('{pelaajaid}', '{kateg}');"
+        kursori.execute(query)
     print("Peli tallennettu.")
-    kursori.close()
     yhteys.close()
+    kursori.close()
     return
 
 
 # Vakiot (Globaalit)
+his_kyslista = [("Minä vuonna Google perustettiin?", "1995", "1998", "2000", "1997", 2),
+                ("Milloin suomi itsenäistyi?", "Eilen", "1914", "1917", "2002", 3),
+                ("Kuka maalasi Mona Lisan?", "Akseli Gallen-Kallela", "Vesa", "Banksy", "Leonardo da Vinci", 4)]
+
+geo_kyslista = [("Mikä on Belgian pääkaupunki", "Pariisi", "Antwerp", "Bryssel", "Gent", 3),
+                ("Missä maassa K2-vuori sijaitsee?", "Pakistanissa", "Intiassa", "Norjassa", "Kiinassa", 1),
+                ("Mikä maa ei kuulu joukkoon?", "Ruotsi", "Suomi", "Norja", "Tanska", 2)]
+
+pop_kyslista = [("Mitä akronyymi " + "'ong' " + "tarkoittaa?", "Oh my god", "Ei mitään", "On god", "Onko nägyny?", 3),
+                ("Kuka näistä ei ole tunnettu muusikko?", "Kanye West", "markoboy87", "Post Malone", "Taylor swift", 2),
+                ("Mikä päivämäärä on kansainvälinen Star Wars-päivä?", "4.5.", "20.4.", "11.11.", "3.2.", 1)]
+
+finalboss_kyslista = [("Mitä kissa sanoo?", "Miau", "Mur", "HAUHAU", "no cap ong fr", 1)]
 # Alustetaan pelaaajalle arvot
-aihealueet = ["Populaatikulttuuri", "Historia", "Maantieto"]
+# aihealueet on lista jossa on aihealueiden nimi, ja sitten osoite siihen listaan jossa ne kyssät on
+# muodossa ("nimi", lista)
+# tää on sen takii et kyssäfunktiossa voidaan sit kysyy dynaamisesti aihealue ja osataan ettii se lista
+aihealueet = [("Pop-kulttuuri", pop_kyslista), ("Historia", his_kyslista),
+              ("Maantieto", geo_kyslista)]
 pelaajanimi = salasana = aihealue = P_location = ""
 pelaajaid = points = 0
 P_kentat = []
+vastatut = []
 
 # Alkaa
 gamestate = "päämenu"
@@ -252,15 +301,34 @@ gamestate = "päämenu"
 gameRunning = True
 while gameRunning == True:
     if gamestate == "päämenu":
-        päämenu()
+        päämenu()   # Päämenusta voi aloittaa uuden pelin tai jatkaa vanhaa.
+        # Tavallaan tää looppi on myös eräänlainen päämenu. Vähän hassua et se on myös funktio.
     elif gamestate == "uusipeli":
-        uusipeli()
+        uusipeli()  # Luodaan uusi pelaaja tietokantaan
+        print("Uusi tunnus luotu.\n")
+        valinta = str(input("Haluatko [P]alata takaisin valikkoon vai [J]atkaa peliä?"))
+        if valinta == "J":
+            gamestate = "jatkapeli"
+        else:
+            gamestate = "päämenu"
     elif gamestate == "jatkapeli":
-        #TODO Tää loppuun
-        jatkapeli()
-        pelaajaliike()
+        if pelaajaid == 0:
+            jatkapeli()             # Pelaajan tiedot ladataan tietokannasta
+        print("Mitä haluat tehdä?\n"
+              "1: Liiku uudelle lentokentälle.\n"
+              "2: Poistu päävalikkoon.\n"
+              "3: Lopeta peli.")
+        valinta = int(input())
+        if valinta == 1:
+            pelaajaliike()      # Pelaaja liikkuu toiselle lentokentälle
+        elif valinta == 2:
+            gamestate = "päämenu"
+        elif valinta == 3:
+            gameRunning = False
+        else: print("En ymmärtänyt.")
 
-"""        "Mitä haluut"
-        liike()
-            kyssäri
-        gamestate = "päämenu"""
+# Pelaaja valitsee poistumisen. Tallennetaan ja poistutaan.
+print("Tallennetaan ja poistutaan.")
+save()
+print(f"Näkemiin, {pelaajanimi}.")
+quit()
