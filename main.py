@@ -83,6 +83,7 @@ def jatkapeli():
 
     # Otetaan game taulusta pelaajan tiedot ja tallennetaan ne muuttujiin.
     query = f"SELECT * FROM GAME WHERE screen_name = '{pelaajanimi}';"
+
     kursori.execute(query)
     tulos = kursori.fetchone()
 
@@ -91,7 +92,10 @@ def jatkapeli():
     P_location = tulos[2]
     pelaajanimi = tulos[3]
     salasana = tulos[4]
-
+    query = f"SELECT name from airport where ident = '{P_location}';"
+    kursori.execute(query)
+    tulos = kursori.fetchone()
+    P_location = (P_location, tulos[0])
     # Otetaan pelaajan random kentät ja laitetaan ne muuttujiin.
     query = f"SELECT ICAO, name FROM randomport, airport WHERE randomport.pelaaja_id = '{pelaajaid}'" \
             f"AND airport.ident = randomport.ICAO;"
@@ -102,7 +106,7 @@ def jatkapeli():
         P_kentat.append(kentta)
 
     # Jos on ihan uusi tunnus, niin asetetaan pelaaja random kentälle
-    if P_location == "" or P_location is None:
+    if P_location[0] == "" or P_location is None:
         P_location = random.sample(P_kentat, 1)
 
     print(f"Hei, {pelaajanimi}. Sinulla on {points} pistettä.")
@@ -181,8 +185,10 @@ def highscore():
     kursori = yhteys.cursor()
     query = f"select screen_name, points from game order by points desc limit 10;"
     kursori.execute(query)
-    highscore = kursori.fetchall()
-    print(highscore)
+    pisteet = kursori.fetchall()
+    print(pisteet)
+    for piste in pisteet:
+        print(f"")
     yhteys.close()
     kursori.close()
     return
@@ -217,6 +223,7 @@ def save():
     #TODO: pelajan tiedot tietokantaan
     # Varmaan voi vaan kattoo tosta noi alustetut arvot alempaa ja
     # Syöttää ne tietokantaan. Pitää kattoo et miten ne saa oikeelle paikalle.
+
     return
 
 
