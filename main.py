@@ -157,22 +157,29 @@ def pelaajaliike():
 def kyssäfunktio():
     oikein = False
     global aihealueet
+    global points
+    global gamestate
     # kysymystuple on -> ("missä jorma on?", Kotona, Lentokentällä, Ulkona, Piilossa, 2)
     # kyslista = [(kystuple),(kystuple),(kystuple)]
     # kysymyslistat siirretty pääohjelmaan
-    print("Valitse aihealue:")
-    n = 0
-    for aihe in aihealueet:
-        print(f"{n + 1}:{aihe[0]}")
-        n += 1
-    aihevalinta = abs(int(input()) - 1)
-    if aihevalinta > len(aihealueet):
-        aihevalinta = len(aihealueet)
-    kyssälista = aihealueet[aihevalinta]
-    valittu = kyssälista[0]
-    kyssälista = kyssälista[1]
+    finalboss = False
+    if len(aihealueet) == 0:
+        kysymys = random.choice(finalboss_kyslista)
+        finalboss = True
+    else:
+        print("Valitse aihealue:")
+        n = 0
+        for aihe in aihealueet:
+            print(f"{n + 1}:{aihe[0]}")
+            n += 1
+        aihevalinta = abs(int(input()) - 1)
+        if aihevalinta > len(aihealueet):
+            aihevalinta = len(aihealueet)
+        kyssälista = aihealueet[aihevalinta]
+        valittu = kyssälista[0]
+        kyssälista = kyssälista[1]
+        kysymys = random.choice(kyssälista)
 
-    kysymys = random.choice(kyssälista)
     aakkoset = ["a", "b", "c", "d"]
     print(kysymys[0])
     print(f"A) {kysymys[1]}     B) {kysymys[2]}\n"
@@ -182,6 +189,11 @@ def kyssäfunktio():
         oikein = True
         vastatut.append(valittu)
         aihealueet.remove(aihealueet[aihevalinta])  # jos vastaus on oikein, poistetaan aihe listasta
+    if oikein == True and finalboss == True:
+        print("WINNER WINNER CHICKEN DINNER!")
+        points += 200
+        gamestate = "mainmenu"
+        highscore()
     return oikein
 
 
@@ -218,13 +230,14 @@ def päämenu():
         gamestate = "uusipeli"
         uusipeli()
         print("Uusi tunnus luotu.\n")
-        print(f"DEBUG: {filtered_airports}")
         valinta = str(input("Haluatko [P]alata takaisin valikkoon vai [J]atkaa peliä?"))
         if valinta == "J":
             gamestate = "jatkapeli"
-            print("Tervetuloa pelaamaan lentsikkapeliä! Pelin tavoite on vastata oikein jokaisen aihealueen kysymykseen, \+
-                  "ja kerätä mahdollisimman paljon pisteitä. Oikeasta vastsauksesta ansaitsee pisteitä, ja lento sujuu vaivatta \+"
-                  "määränpäähäsi. Väärästä vastauksesta menettää pisteitä, sekä lentoa saattaa kohdata epäonni!"
+            print(f"Tervetuloa pelaamaan lentsikkapeliä! Pelin tavoite on vastata oikein jokaisen aihealueen"
+                  f"kysymykseen ja kerätä mahdollisimman paljon pisteitä. Oikeasta vastsauksesta ansaitsee pisteitä"
+                  f" ja lento sujuu vaivatta määränpäähäsi."
+                  f"Väärästä vastauksesta menettää pisteitä, sekä lentoa saattaa kohdata epäonni!")
+
             print("Onnea matkaan!")
         else:
             gamestate = "päämenu"
