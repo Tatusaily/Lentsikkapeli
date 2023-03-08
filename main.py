@@ -173,6 +173,8 @@ def kyssäfunktio():
     kyssälista = kyssälista[1]
 
     kysymys = random.choice(kyssälista)
+    if len(aihealueet) == 0:
+        kysymys = random.choice(finalboss_kyslista)
     aakkoset = ["a", "b", "c", "d"]
     print(kysymys[0])
     print(f"A) {kysymys[1]}     B) {kysymys[2]}\n"
