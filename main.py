@@ -213,10 +213,19 @@ def save():
 
 
 # Vakiot (Globaalit)
-his_kyslista = []
-geo_kyslista = []
-pop_kyslista = []
-finalboss_kyslista = []
+his_kyslista = [("Minä vuonna Google perustettiin?", "1995", "1998", "2000", "1997", 2),
+                ("Milloin suomi itsenäistyi?", "Eilen", "1914", "1917", "2002", 3),
+                ("Kuka maalasi Mona Lisan?", "Akseli Gallen-Kallela", "Vesa", "Banksy", "Leonardo da Vinci", 4)]
+
+geo_kyslista = [("Mikä on Belgian pääkaupunki", "Pariisi", "Antwerp", "Bryssel", "Gent", 3),
+                ("Missä maassa K2-vuori sijaitsee?", "Pakistanissa", "Intiassa", "Norjassa", "Kiinassa", 1),
+                ("Mikä maa ei kuulu joukkoon?", "Ruotsi", "Suomi", "Norja", "Tanska", 2)]
+
+pop_kyslista = [("Mitä akronyymi " + "'ong' " + "tarkoittaa?", "Oh my god", "Ei mitään", "On god", "Onko nägyny?", 3),
+                ("Kuka näistä ei ole tunnettu muusikko?", "Kanye West", "markoboy87", "Post Malone", "Taylor swift", 2),
+                ("Mikä päivämäärä on kansainvälinen Star Wars-päivä?", "4.5.", "20.4.", "11.11.", "3.2.", 1)]
+
+finalboss_kyslista = [("Mitä kissa sanoo?", "Miau", "Mur", "HAUHAU", "no cap ong fr", 1)]
 # Alustetaan pelaaajalle arvot
 # aihealueet on lista jossa on aihealueiden nimi, ja sitten osoite siihen listaan jossa ne kyssät on
 # muodossa ("nimi", lista)
