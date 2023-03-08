@@ -218,13 +218,14 @@ def päämenu():
         gamestate = "uusipeli"
         uusipeli()
         print("Uusi tunnus luotu.\n")
-        print(f"DEBUG: {filtered_airports}")
         valinta = str(input("Haluatko [P]alata takaisin valikkoon vai [J]atkaa peliä?"))
         if valinta == "J":
             gamestate = "jatkapeli"
-            print("Tervetuloa pelaamaan lentsikkapeliä! Pelin tavoite on vastata oikein jokaisen aihealueen kysymykseen, \+
-                  "ja kerätä mahdollisimman paljon pisteitä. Oikeasta vastsauksesta ansaitsee pisteitä, ja lento sujuu vaivatta \+"
-                  "määränpäähäsi. Väärästä vastauksesta menettää pisteitä, sekä lentoa saattaa kohdata epäonni!"
+            print(f"Tervetuloa pelaamaan lentsikkapeliä! Pelin tavoite on vastata oikein jokaisen aihealueen"
+                  f"kysymykseen ja kerätä mahdollisimman paljon pisteitä. Oikeasta vastsauksesta ansaitsee pisteitä"
+                  f" ja lento sujuu vaivatta määränpäähäsi."
+                  f"Väärästä vastauksesta menettää pisteitä, sekä lentoa saattaa kohdata epäonni!")
+
             print("Onnea matkaan!")
         else:
             gamestate = "päämenu"
