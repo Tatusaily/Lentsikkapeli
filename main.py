@@ -198,7 +198,10 @@ def päämenu():
         valinta = str(input("Haluatko [P]alata takaisin valikkoon vai [J]atkaa peliä?"))
         if valinta == "J":
             gamestate = "jatkapeli"
-            # TODO: Tähän vois laittaa jotain pelin aloitus tekstiä
+            print("Tervetuloa pelaamaan lentsikkapeliä! Pelin tavoite on vastata oikein jokaisen aihealueen kysymykseen, \+
+                  "ja kerätä mahdollisimman paljon pisteitä. Oikeasta vastsauksesta ansaitsee pisteitä, ja lento sujuu vaivatta \+"
+                  "määränpäähäsi. Väärästä vastauksesta menettää pisteitä, sekä lentoa saattaa kohdata epäonni!"
+            print("Onnea matkaan!")
         else:
             gamestate = "päämenu"
 
@@ -230,8 +233,8 @@ def save():
     query = f"update game set points where screen_name = '{pelaajanimi}'";
     kursori.execute(query)
     print("Peli tallennettu.")
-    yhteys.close()
     kursori.close()
+    yhteys.close()
     return
 
 
