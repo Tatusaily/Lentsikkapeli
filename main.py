@@ -225,38 +225,42 @@ def päämenu():
           "2: Jatka vanhaa peliä.\n"
           "3: Näytä Pisteet.\n"
           "4: Poistu pelistä.")
-    valinta = int(input())
-    if valinta == 1:
-        gamestate = "uusipeli"
-        uusipeli()
-        print("Uusi tunnus luotu.\n")
-        valinta = str(input("Haluatko [P]alata takaisin valikkoon vai [J]atkaa peliä?"))
-        if valinta == "J":
-            gamestate = "jatkapeli"
-            print(f"Tervetuloa pelaamaan lentsikkapeliä! Pelin tavoite on vastata oikein jokaisen aihealueen"
-                  f"kysymykseen ja kerätä mahdollisimman paljon pisteitä. Oikeasta vastsauksesta ansaitsee pisteitä"
-                  f" ja lento sujuu vaivatta määränpäähäsi."
-                  f"Väärästä vastauksesta menettää pisteitä, sekä lentoa saattaa kohdata epäonni!")
-
-            print("Onnea matkaan!")
-        else:
-            gamestate = "päämenu"
-
-    elif valinta == 2:
-        if tunnustarkistus() == True:
-            # Tunnus on oikein ja voidaan jatkaa
-            print("DEBUG Tunnus oikein! :)")
-            gamestate = "jatkapeli"
-        else:
-            print("DEBUG Tunnus väärin! :(")
-    elif valinta == 3:
-        highscore()
-    elif valinta == 4:      # Pelaaja menee menusta pois. Peliä ei ole kesken joten ei tarvitse tallentaa.
-        gameRunning = False
-        quit()
+    valinta = input()
+    if valinta == "":
+        return 
     else:
+        valinta = int(input())
+        if valinta == 1:
+            gamestate = "uusipeli"
+            uusipeli()
+            print("Uusi tunnus luotu.\n")
+            valinta = str(input("Haluatko [P]alata takaisin valikkoon vai [J]atkaa peliä?"))
+            if valinta == "J":
+                gamestate = "jatkapeli"
+                print(f"Tervetuloa pelaamaan lentsikkapeliä! Pelin tavoite on vastata oikein jokaisen aihealueen"
+                      f"kysymykseen ja kerätä mahdollisimman paljon pisteitä. Oikeasta vastsauksesta ansaitsee pisteitä"
+                      f" ja lento sujuu vaivatta määränpäähäsi."
+                      f"Väärästä vastauksesta menettää pisteitä, sekä lentoa saattaa kohdata epäonni!")
 
-        return
+                print("Onnea matkaan!")
+            else:
+                gamestate = "päämenu"
+
+        elif valinta == 2:
+            if tunnustarkistus() == True:
+                # Tunnus on oikein ja voidaan jatkaa
+                print("DEBUG Tunnus oikein! :)")
+                gamestate = "jatkapeli"
+            else:
+                print("DEBUG Tunnus väärin! :(")
+        elif valinta == 3:
+            highscore()
+        elif valinta == 4:      # Pelaaja menee menusta pois. Peliä ei ole kesken joten ei tarvitse tallentaa.
+            gameRunning = False
+            quit()
+        else:
+
+            return
     return
 def save():
     print("Tallennetaan...")
