@@ -254,6 +254,9 @@ def päämenu():
     elif valinta == 4:      # Pelaaja menee menusta pois. Peliä ei ole kesken joten ei tarvitse tallentaa.
         gameRunning = False
         quit()
+    else:
+
+        return
     return
 def save():
     print("Tallennetaan...")
