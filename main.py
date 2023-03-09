@@ -208,8 +208,9 @@ def highscore():
     kursori = yhteys.cursor()
     query = f"select screen_name, points from game order by points desc limit 10;"
     kursori.execute(query)
-    highscore = kursori.fetchall()
-    print(highscore)
+    pisteet = kursori.fetchall()
+    for piste in pisteet:
+        print(f"|Nimi: {piste[0]} | Pisteet: {piste[1]}|")
 
     yhteys.close()
     kursori.close()
@@ -227,9 +228,9 @@ def päämenu():
           "4: Poistu pelistä.")
     valinta = input()
     if valinta == "":
-        return 
+        return
     else:
-        valinta = int(input())
+        valinta = int(valinta)
         if valinta == 1:
             gamestate = "uusipeli"
             uusipeli()
