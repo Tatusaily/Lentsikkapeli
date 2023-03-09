@@ -255,6 +255,7 @@ def päämenu():
         gameRunning = False
         quit()
     else:
+
         return
     return
 def save():
