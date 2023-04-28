@@ -1,5 +1,8 @@
 import mysql.connector
 import random
+from flask import Flask
+app = Flask(__name__)
+
 # Funktiot tähän
 def uusipeli():
     print("UUSIPELI")

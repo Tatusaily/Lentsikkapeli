@@ -1,18 +1,31 @@
 PROTO TODO
 Ctrl + F TODO
-Mantereen sisällä vaaditut tehtävät
-    jotain kivoja trivia-monivalinta juttuja?
-    pelaaja valitsee aihealueen
-        aihealue algoritmi:
-        ["aihealue"_kyslista]
-    pelaajan suoritetut aihealueet tallentuu tietokantaan
 
-Miten peli loppuu?
-    Kaikista aihealueista vastattu kysymys oikein
-        FINAL BOSS KYSYMYS johon oikein vastatessa voittaa pelin
-            kysymyksen antama pistemäärä laskee eksponentiaalisesti vääristä vastauksista
+Poistetaan toi todo listasta kun osa on tehty.
 
+TODO SQL kantaan pelaajan suoritetut kategoriat kiinni pelaajaan
+Pelin alussa pelaaja-olento tulee JavaScriptiin pakettina.
+Kartalla kaikki Euroopan kentät (-venäjä).
+    Muutamat kentät on "valittuja" joista tulee kategoria-kysymys
+    ei-valituista kentistä tulee yleistieto -kysymys.
 
-TEHTY: oikeasta vastauksesta saa pisteitä
-        peräkkäisistä oikeista vastauksista saa kertoimen.
+Python:
+SQL Queryt
+    TODO Uuden pelaajan luominen ja vanhan pelaajan haku
+    TODO Tallennus
+
+JS:
+    TODO Liikkuminen         Python API
+    TODO Trivia-interaktio   Trivia API
+        TODO lista.filter
+    TODO Päämenu?
+        Form:           Python API
+            Uusi pelaaja
+            Vanha pelaaja
+    TODO Tallennus           Python API
+
+HTML & CSS:
+    TODO Ulkoasu ja ulkorakenne
+    TODO Käyttämättömät asiat menee piiloon (style: none)
+    TODO Päämenu-form
 
