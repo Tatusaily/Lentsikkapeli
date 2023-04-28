@@ -4,7 +4,7 @@ Ctrl + F TODO
 Poistetaan toi todo listasta kun osa on tehty.
 
 TODO SQL kantaan pelaajan suoritetut kategoriat kiinni pelaajaan
-Pelin alussa pelaaja-olento tulee JavaScriptiin pakettina.
+TATU TODO Pelin alussa pelaaja-olento tulee JavaScriptiin pakettina.
 Kartalla kaikki Euroopan kentät (-venäjä).
     Muutamat kentät on "valittuja" joista tulee kategoria-kysymys
     ei-valituista kentistä tulee yleistieto -kysymys.
