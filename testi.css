@@ -1,0 +1,75 @@
+body {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+}
+.container {
+    display: flex;
+    background-color: red;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+.container-two {
+    margin: 10px;
+    padding: 0px 5px 5px 5px;
+    border-radius: 10px;
+    display: flex;
+    background-color: white;
+    flex-shrink: 1;
+    flex: 1;
+    height: max-content;
+    align-items: center;
+}
+.box {
+    border-radius: 10px;
+    background-color: #ccc;
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.one {
+    background-color: lightgray;
+    flex-basis: 250px;
+    flex-grow: 1;
+    height: 800px;
+    margin-right: 5px;
+}
+.two {
+    background-color: lightgray;
+    flex-basis: 250px;
+    margin-left: 5px;
+    flex-grow: 0;
+    flex-shrink: 1;
+    height: 800px;
+}
+.three {
+    background-color: lightgray;
+    flex-basis: 250px;
+    flex-grow: 1;
+    height: 300px;
+    margin: 5px;
+}
+.box.big {
+    height: 60vh;
+    width: 60vw;
+}
+.box.row {
+    flex-direction: row;
+}
+.box.column {
+    flex-direction: column;
+}
+.box.bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+}
