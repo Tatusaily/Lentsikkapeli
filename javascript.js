@@ -11,8 +11,9 @@ existingUser = async function(){
     const apiurl = `http://127.0.0.1:3000/getplayerdata/${name},${pass}`
     console.log(apiurl)
     const apiresponse = await fetch(apiurl)
-    console.log(apiresponse)
-    return apiresponse
+    const apiresponse2 = await apiresponse.json()
+    console.log(apiresponse2)
+    return apiresponse2
 }
 
 // Yksi funktio jolla voi kutsua eri kysymykset. Varmaan helpoin käyttää tätä napeissa
