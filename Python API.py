@@ -2,9 +2,10 @@ import mysql.connector
 import random
 import json
 from flask import Flask
+from flask_cors import CORS
 # API rakennus
 app = Flask(__name__)
-
+CORS(app)
 
 # getplayerdata palauttaa määritellyn pelaajan tiedot tietokannasta
 @app.route('/getplayerdata/<playername>,<password>')
