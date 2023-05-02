@@ -12,7 +12,7 @@
     <script defer src="yleistriviascript.js"></script>
 </head>
 <body>
-    <form id="loginform" onsubmit="existingUser(); return false">
+    <form id="loginform" onsubmit="existingUser(); return false">   <!-- return false estää sivua päivittymästä -->
     <label for="username">Käyttäjätunnus:</label>
     <input type="text" id="username" name="username"><br>
     <label for="password">Salasana:</label>
@@ -21,7 +21,7 @@
     </form>
     <div id="map"></div>
     <div id="questionbox"></div>
-    <button onclick="getGeneralBox()">OTA KYSYMYS</button>
+    <button onclick="getQuestion('general')">OTA KYSYMYS</button>
 </body>
 </html>
 
