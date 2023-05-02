@@ -11,14 +11,15 @@
     <script defer src="javascript.js"></script>
 </head>
 <body>
-  <form onsubmit="return existingUser(username, password)">
+    <form id="loginform" onsubmit="existingUser(); return false">
     <label for="username">Käyttäjätunnus:</label>
     <input type="text" id="username" name="username"><br>
     <label for="password">Salasana:</label>
     <input type="password" id="password" name="password"><br>
     <input type="submit" value="Kirjaudu sisään">
-  </form>
+    </form>
     <div id="map"></div>
+    <button onclick="mainTrivia('catHist')">FUNKTIO</button>
 </body>
 </html>
 

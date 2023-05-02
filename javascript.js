@@ -1,9 +1,10 @@
-existingUser = async function(name, pass){
-    const host = '127.0.0.1:3000'
-    const playerdata = `/getplayerdata/${name},${pass}`
-    const apiurl = `${host}+${playerdata}`
-
+existingUser = async function(){
+    const name = document.getElementById("username").value
+    const pass = document.getElementById("password").value
+    const apiurl = `127.0.0.1:3000/getplayerdata/${name},${pass}`
+    console.log(apiurl)
     const apiresponse = await fetch(apiurl)
+    console.log(apiresponse)
     return apiresponse
 }
 
@@ -28,4 +29,4 @@ vois testaa laittaa for -loopilla läjän näitä
     vaikka tietokannasta?
     tarkotus ois vetää sieltä python koodista API-kutsulla
 */
-L.marker([60, 24]).addTo(map)
+//L.marker([60, 24]).addTo(map)
