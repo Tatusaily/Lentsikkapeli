@@ -14,8 +14,57 @@ existingUser = async function(){
     console.log(apiresponse)
     return apiresponse
 }
-getGeneralBox = async function(){
+
+// Yksi funktio jolla voi kutsua eri kysymykset. Varmaan helpoin käyttää tätä napeissa
+getQuestion = async function(category){
+    // muutetaan category kutsuttavaan muotoon
+    switch (category){
+        case "History":
+            category = "catHist"
+            break;
+        case "Mythology":
+            category = "catMyth"
+            break;
+        case "Entertainment":
+            category = "catEnte"
+            break;
+        case "Science":
+            category = "catScie"
+            break;
+        case "General":
+            category = "general"
+            break;
+    }
+
+    let result
+    if (category === "general"){
+        result = await generalTrivia()
+        currentCategory = "general"
+    }else{
+        result = await mainTrivia(category)
+        currentCategory = category
+    }
+    const triviaArray = result.results[0]
+    const triviaQuestion = triviaArray.question
+    const correct = triviaArray.correct_answer
+    let answers = triviaArray.incorrect_answers
+    answers.push(correct)
+    rightanswer = correct
+    answers = answers.sort(() => 0.5 - Math.random())
+    // DEBUG LOG
+        console.log(triviaQuestion)
+        console.log(answers)
+        console.log(correct)
+        //console.log(triviaArray)
+
+    // TODO Tähän sit koodia joka syöttää ne kysymykset sinne front-endiin
+
+
+}
+/*
+getGeneralQuestion = async function(){
     // otetaan kyssä
+    currentCategory = "general"
     const randomQuestion = await generalTrivia()
     const question = randomQuestion.results[0].question
     const correct = randomQuestion.results[0].correct_answer
@@ -28,8 +77,18 @@ getGeneralBox = async function(){
         console.log(answers)
         console.log(correct)
         console.log(randomQuestion)
-
 }
+getMainQuestion = async function(category){
+    // otetaan kyssä
+    const mainQuestion = await mainTrivia(category)
+    const questionArray = mainQuestion.results[0]
+    const questionText = questionArray.question
+    const correct = questionArray.correct_answer
+    let answers = questionArray.incorrect_answers
+    answers.push(correct)
+    rightanswer = correct
+    answers = answers.sort(() => 0.5 - Math.random())
+}*/
 checkAnswer = async function(answer){
     let isCorrect
     if (answer === rightanswer){
@@ -41,6 +100,20 @@ checkAnswer = async function(answer){
 //---TÄÄ SUORITETAAN AINA KUN HTML AUKEE---
 
 let rightanswer = ""
+let currentCategory = ""
+let categoryButtons = document.getElementsByClassName("category")
+for (let button of categoryButtons){
+    const buttontext = button.innerHTML
+    button.addEventListener("click", function (){getQuestion(buttontext)})
+}
+/*
+categoryButtons.forEach(button => {
+    const buttontext = button.innerHTML
+    button.addEventListener("click", function (){getQuestion(buttontext)})
+})*/
+//categoryButton.addEventListener("click", function(){getQuestion("general")})
+
+
 
 // Tehdään karttaolio "map".  "L" viittaa Leaflet-apiin.
 let map = L.map("map")

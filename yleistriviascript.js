@@ -37,13 +37,13 @@ async function mainTrivia(category) {
       catNum = sciTriArr[random]
       break;
     default:
-      console.log("moi")
+      console.log("Encountered an error. No such category.")
   }
   const apiUrl = `https://opentdb.com/api.php?amount=1&category=${catNum}&difficulty=medium&type=multiple`;
   try {
     const result = await fetch(apiUrl)
     const jsonResult = await result.json()
-    console.log(jsonResult)
+    //console.log(jsonResult)
     return jsonResult
   } catch(error) {
     console.log(error.message)
