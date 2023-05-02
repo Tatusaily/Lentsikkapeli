@@ -1,7 +1,10 @@
-existingUser = Function(){
+existingUser = async function(name, pass){
     const host = '127.0.0.1:3000'
-    const playerdata = '/getplayerdata/'
+    const playerdata = `/getplayerdata/${name},${pass}`
+    const apiurl = `${host}+${playerdata}`
 
+    const apiresponse = await fetch(apiurl)
+    return apiresponse
 }
 
 //PÄÄOHJELMA
