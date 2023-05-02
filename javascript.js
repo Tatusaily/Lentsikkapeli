@@ -21,22 +21,30 @@ getGeneralBox = async function(){
     const correct = randomQuestion.results[0].correct_answer
     let answers = randomQuestion.results[0].incorrect_answers
     answers.push(correct)
+    rightanswer = correct
     answers = answers.sort(() => 0.5 - Math.random())
-    console.log(question)
-    console.log(answers)
-    console.log(correct)
-    console.log(randomQuestion)
-    for(let i in answers){
-        const questiondiv = document.createElement("div")
-        const questiontext = document.createElement("p")
-        questiontext.innerHTML = i
-        questiondiv.appendChild(questiontext)
+    // DEBUG LOG
+        console.log(question)
+        console.log(answers)
+        console.log(correct)
+        console.log(randomQuestion)
 
-    }
 }
-//PÄÄOHJELMA
-// Tehdään karttaolio "map". "L" viittaa Leaflet-apiin.
-let map = L.map("map").setView([60.224168, 24.758141], 15);
+checkAnswer = async function(answer){
+    let isCorrect
+    if (answer === rightanswer){
+        isCorrect = true
+    }else{isCorrect = false}
+    return isCorrect
+}
+//---------------PÄÄOHJELMA----------------
+//---TÄÄ SUORITETAAN AINA KUN HTML AUKEE---
+
+let rightanswer = ""
+
+// Tehdään karttaolio "map".  "L" viittaa Leaflet-apiin.
+let map = L.map("map")
+map.setView([60.224168, 24.758141], 15)
 // Luodaan eri layerit joita voi vaihtaa mapin oikeesta kulmasta.
 // Näitä löytyy nimellä "tilelayer" tai "baselayer".
 // Näihin pitäis copyright-säännön mukaan laittaa joku "attribution" juttu mut ei laiteta ku se näyttää rumalta.
