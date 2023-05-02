@@ -1,7 +1,14 @@
 existingUser = async function(){
     const name = document.getElementById("username").value
     const pass = document.getElementById("password").value
-    const apiurl = `127.0.0.1:3000/getplayerdata/${name},${pass}`
+    /*
+    const proxy = 'https://users.metropolia.fi/~ilkkamtk/proxy.php?url='
+    const apiurl = `${proxy}http://127.0.0.1:3000/getplayerdata/${name},${pass}`
+     */
+
+    // tulee joku cors error
+    // toimii oikein jos laittaa apirulin suoraan selaimen URLiin.
+    const apiurl = `http://127.0.0.1:3000/getplayerdata/${name},${pass}`
     console.log(apiurl)
     const apiresponse = await fetch(apiurl)
     console.log(apiresponse)
