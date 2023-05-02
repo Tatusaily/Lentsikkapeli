@@ -97,6 +97,26 @@ checkAnswer = async function(answer){
     }else{isCorrect = false}
     return isCorrect
 }
+getEuropeAirports = async function(){
+    let euAirportList = await fetch('http://127.0.0.1:3000/geteuropeairports')
+    euAirportList = await euAirportList.json()
+    console.log(euAirportList)
+    return euAirportList
+}
+drawEuropeAirports = async function(){
+    const euAirportList = await getEuropeAirports()
+    console.log("saatiin")
+    for (let airport of euAirportList){
+        let marker = L.marker([airport[0], airport[1]]).addTo(map)
+        let popupContent = `Name: ${airport[3]}, ICAO: ${airport[2]}`
+        marker.bindPopup(popupContent).openPopup()
+    }
+    console.log("tehty")
+}
+
+
+
+
 //---------------PÄÄOHJELMA----------------
 //---TÄÄ SUORITETAAN AINA KUN HTML AUKEE---
 
@@ -129,6 +149,9 @@ const maplayers = {"Lightmode": lightlayer, "Darkmode": darklayer}
 const layerControl = L.control.layers(maplayers).addTo(map)
 // Aloitetaan vaalealla layerilla
 lightlayer.addTo(map)
+
+// Piirretään EU kentät kartalle
+//drawEuropeAirports()
 
 
 /* testi

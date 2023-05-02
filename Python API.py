@@ -20,7 +20,7 @@ def getplayerdata(playername, password):
     )
     query = f"SELECT screen_name, points, location " \
             f"FROM game " \
-            f"WHERE screen_name= '{playername}' and password= '{password}'"
+            f"WHERE screen_name= '{playername}' and password= '{password}';"
     sqlcursor = sqlconnection.cursor()
     sqlcursor.execute(query)
     sqlresult = sqlcursor.fetchone()
@@ -31,6 +31,24 @@ def getplayerdata(playername, password):
     }
     return playerdata
 
+
+@app.route('/geteuropeairports')
+def geteuropeairports():
+    sqlconnection = mysql.connector.connect(
+        host='localhost',
+        port=3306,
+        database='flight_game',
+        user='user1',
+        password='sala1',
+        autocommit=True
+    )
+    query = f"SELECT latitude_deg, longitude_deg, ident, name " \
+            f"FROM airport " \
+            f"WHERE continent='EU' AND(type='large_airport' OR type='medium_airport') AND NOT iso_country='RU';"
+    sqlcursor = sqlconnection.cursor()
+    sqlcursor.execute(query)
+    sqlresult = sqlcursor.fetchall()
+    return sqlresult
 
 # Pääohjelma käynnistää flask-taustapalvelun localhostiin
 if __name__ == '__main__':
