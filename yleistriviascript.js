@@ -49,3 +49,4 @@ async function mainTrivia(category) {
     console.log(error.message)
   }
 }
+
