@@ -11,7 +11,16 @@
     <script defer src="javascript.js"></script>
 </head>
 <body>
+  <form onsubmit="return existingUser(username, password)">
+    <label for="username">Käyttäjätunnus:</label>
+    <input type="text" id="username" name="username"><br>
+    <label for="password">Salasana:</label>
+    <input type="password" id="password" name="password"><br>
+    <input type="submit" value="Kirjaudu sisään">
+  </form>
     <div id="map"></div>
 
 </body>
 </html>
+
+
