@@ -9,9 +9,20 @@
     <script defer src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <link href="stylesheet.css" rel="stylesheet">
     <script defer src="javascript.js"></script>
+    <script defer src="yleistriviascript.js"></script>
 </head>
 <body>
+    <form id="loginform" onsubmit="existingUser(); return false">
+    <label for="username">Käyttäjätunnus:</label>
+    <input type="text" id="username" name="username"><br>
+    <label for="password">Salasana:</label>
+    <input type="password" id="password" name="password"><br>
+    <input type="submit" value="Kirjaudu sisään">
+    </form>
     <div id="map"></div>
-
+    <div id="questionbox"></div>
+    <button onclick="getGeneralBox()">OTA KYSYMYS</button>
 </body>
 </html>
+
+
