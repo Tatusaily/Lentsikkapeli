@@ -129,7 +129,8 @@ let currentCategory = ""
 let categoryButtons = document.getElementsByClassName("category")
 for (let button of categoryButtons){
     const buttontext = button.innerHTML
-    button.addEventListener("click", function (){getQuestion(buttontext)})
+    button.addEventListener("click", function (){getQuestion(buttontext)
+    document.getElementById("buttons").style.display = "none";})
 }
 /*
 categoryButtons.forEach(button => {
