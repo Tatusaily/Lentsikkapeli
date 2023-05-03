@@ -128,6 +128,7 @@ drawEuropeAirports = async function(){
 //---------------PÄÄOHJELMA----------------
 //---TÄÄ SUORITETAAN AINA KUN HTML AUKEE---
 let points = 10000
+document.getElementById("points").innerText = points
 let rightanswer = ""
 let currentCategory = ""
 let answerButtons = document.getElementsByClassName("answer")
