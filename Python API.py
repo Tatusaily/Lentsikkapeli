@@ -44,12 +44,33 @@ def geteuropeairports():
     )
     query = f"SELECT latitude_deg, longitude_deg, ident, name " \
             f"FROM airport " \
-            f"WHERE continent='EU' AND(type='large_airport' OR type='medium_airport') AND NOT iso_country='RU';"
+            f"WHERE continent='EU' AND type='large_airport' AND NOT iso_country='RU';"
     sqlcursor = sqlconnection.cursor()
     sqlcursor.execute(query)
     sqlresult = sqlcursor.fetchall()
     return sqlresult
 
+
+@app.route('/moveplayer/<icao>,<name>')
+def moveplayer(icao, name):
+    sqlconnection = mysql.connector.connect(
+        host='localhost',
+        port=3306,
+        database='flight_game',
+        user='user1',
+        password='sala1',
+        autocommit=True
+    )
+    query = f"UPDATE GAME " \
+            f"SET location = '{icao}' " \
+            f"WHERE screen_name = '{name}' ;"
+    print(query)
+    sqlcursor = sqlconnection.cursor()
+    sqlcursor.execute(query)
+    return "Player Moved"
+
+
 # Pääohjelma käynnistää flask-taustapalvelun localhostiin
 if __name__ == '__main__':
+
     app.run(use_reloader=True, host='127.0.0.1', port=3000)

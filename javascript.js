@@ -80,30 +80,37 @@ drawEuropeAirports = async function(){
     for (let airport of euAirportList){
         const button = document.createElement("button")
         button.innerHTML = "Fly to airport"
-        button.onclick = function(){flyToAirport(button[2])}
+        button.onclick = function(){flyToAirport(airport[2])}
         let marker = L.marker([airport[0], airport[1]], {icon: myIcon}).addTo(map)
-        let popupContent = `Name: ${airport[3]}, ICAO: ${airport[2], button}`
-        marker.bindPopup(popupContent).openPopup()
+
+        // Pop-up sisältö
+        let popDiv = document.createElement("div")
+        let popText = document.createElement("p")
+        popText.innerHTML = `Name: ${airport[3]}, ICAO: ${airport[2]}`
+        popDiv.appendChild(popText)
+        popDiv.appendChild(button)
+        marker.bindPopup(popDiv).openPopup()
     }
     console.log("kentät piirretty :)")
 }
 flyToAirport = async function(ICAO){
-
+    await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername}`)
 }
-
 
 
 
 //---------------PÄÄOHJELMA----------------
 //---TÄÄ SUORITETAAN AINA KUN HTML AUKEE---
 // Alustetaan Muutujia
-let player = ""
+let playername = "tat"
 let points = 10000
 document.getElementById("points").innerText = points
 let rightanswer = ""
 let currentCategory = ""
 let answerButtons = document.getElementsByClassName("answer")
 let categoryButtons = document.getElementsByClassName("category")
+
+// Napit
 for (let button of categoryButtons){
     const buttontext = button.innerHTML
     button.addEventListener("click", function (){getQuestion(buttontext)
@@ -119,16 +126,6 @@ for (let button of answerButtons){
         document.getElementById("answerbox").style.display = "none";
     }
     )}
-
-
-/*
-categoryButtons.forEach(button => {
-    const buttontext = button.innerHTML
-    button.addEventListener("click", function (){getQuestion(buttontext)})
-})*/
-//categoryButton.addEventListener("click", function(){getQuestion("general")})
-
-
 
 // Tehdään karttaolio "map".  "L" viittaa Leaflet-apiin.
 let map = L.map("map", {renderer: L.canvas()})
