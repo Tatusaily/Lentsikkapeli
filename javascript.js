@@ -58,7 +58,7 @@ getQuestion = async function(category){
         console.log(correct)
         //console.log(triviaArray)
     // TODO Tähän sit koodia joka syöttää ne kysymykset sinne front-endiin
-    document.getElementById("question").innerText = triviaQuestion
+    document.getElementById("question").innerHTML = triviaQuestion
 
 }
 /*
@@ -125,13 +125,22 @@ drawEuropeAirports = async function(){
 let points = 10000
 let rightanswer = ""
 let currentCategory = ""
+let answerButtons = document.getElementsByClassName("answer")
 let categoryButtons = document.getElementsByClassName("category")
 for (let button of categoryButtons){
     const buttontext = button.innerHTML
     button.addEventListener("click", function (){getQuestion(buttontext)
     document.getElementById("buttons").style.display = "none";
+    document.getElementById("question").style.display = "flex"
     document.getElementById("answerbox").style.display = "flex";})
 }
+for (let button of answerButtons){
+    button.addEventListener("click", () => {
+    document.getElementById("buttons").style.display = "flex";
+    document.getElementById("question").style.display = "none";
+    document.getElementById("answerbox").style.display = "none";})}
+
+
 /*
 categoryButtons.forEach(button => {
     const buttontext = button.innerHTML
