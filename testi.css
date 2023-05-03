@@ -140,10 +140,16 @@ h1, h2, p {
     font-size: 2rem;
     transition: .4s;
 }
+.container-two {
+    display: none;
 
+}
 button:hover{
     transform: scale(1.2);
     cursor: pointer;
+}
+#question {
+    display: none;
 }
 :root {
     --gradient: linear-gradient(
