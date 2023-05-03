@@ -59,6 +59,11 @@ getQuestion = async function(category){
         //console.log(triviaArray)
     // TODO Tähän sit koodia joka syöttää ne kysymykset sinne front-endiin
     document.getElementById("question").innerHTML = triviaQuestion
+    let counter = 0
+    for (let button of answerButtons){
+        button.innerHTML = answers[counter]
+        counter += 1
+    }
 
 }
 /*
@@ -97,7 +102,7 @@ checkAnswer = async function(answer){
     } else{isCorrect = false
         points -= 50
     }
-
+    document.getElementById("points").innerHTML = points
     return isCorrect
 }
 getEuropeAirports = async function(){
@@ -110,7 +115,7 @@ drawEuropeAirports = async function(){
     const euAirportList = await getEuropeAirports()
     console.log("saatiin")
     for (let airport of euAirportList){
-        let marker = L.marker([airport[0], airport[1]]).addTo(map)
+        let marker = L.marker([airport[0], airport[1]], {icon: myIcon}).addTo(map)
         let popupContent = `Name: ${airport[3]}, ICAO: ${airport[2]}`
         marker.bindPopup(popupContent).openPopup()
     }
@@ -130,15 +135,18 @@ let categoryButtons = document.getElementsByClassName("category")
 for (let button of categoryButtons){
     const buttontext = button.innerHTML
     button.addEventListener("click", function (){getQuestion(buttontext)
-    document.getElementById("buttons").style.display = "none";
+    document.getElementById("buttons").style.display = "none"
     document.getElementById("question").style.display = "flex"
-    document.getElementById("answerbox").style.display = "flex";})
+    document.getElementById("answerbox").style.display = "flex"})
 }
 for (let button of answerButtons){
     button.addEventListener("click", () => {
-    document.getElementById("buttons").style.display = "flex";
-    document.getElementById("question").style.display = "none";
-    document.getElementById("answerbox").style.display = "none";})}
+        checkAnswer(button.innerHTML)
+        document.getElementById("buttons").style.display = "flex";
+        document.getElementById("question").style.display = "none";
+        document.getElementById("answerbox").style.display = "none";
+    }
+    )}
 
 
 /*
@@ -151,7 +159,7 @@ categoryButtons.forEach(button => {
 
 
 // Tehdään karttaolio "map".  "L" viittaa Leaflet-apiin.
-let map = L.map("map")
+let map = L.map("map", {renderer: L.canvas()})
 map.setView([60.224168, 24.758141], 15)
 // Luodaan eri layerit joita voi vaihtaa mapin oikeesta kulmasta.
 // Näitä löytyy nimellä "tilelayer" tai "baselayer".
@@ -163,7 +171,10 @@ const maplayers = {"Lightmode": lightlayer, "Darkmode": darklayer}
 const layerControl = L.control.layers(maplayers).addTo(map)
 // Aloitetaan vaalealla layerilla
 lightlayer.addTo(map)
-
+const myIcon = L.icon({
+    iconUrl: 'IMG/star.png',
+    iconSize: [10, 10]
+})
 // Piirretään EU kentät kartalle
 //drawEuropeAirports()
 
