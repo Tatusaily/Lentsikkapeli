@@ -101,6 +101,7 @@ h1, h2, p {
 }
 .button {
     display: flex;
+    justify-self: space-between;
     border: none;
     background: linear-gradient(
     45deg,
@@ -121,6 +122,7 @@ h1, h2, p {
 }
 .category {
     display: flex;
+    align-self: flex-start;
     border: none;
     background: linear-gradient(
     45deg,
