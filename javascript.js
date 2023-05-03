@@ -57,7 +57,6 @@ getQuestion = async function(category){
         console.log(answers)
         console.log(correct)
         //console.log(triviaArray)
-    // TODO Tähän sit koodia joka syöttää ne kysymykset sinne front-endiin
     document.getElementById("question").innerHTML = triviaQuestion
     let counter = 0
     for (let button of answerButtons){
