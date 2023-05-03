@@ -140,9 +140,8 @@ h1, h2, p {
     font-size: 2rem;
     transition: .4s;
 }
-.container-two {
+#answerbox {
     display: none;
-
 }
 button:hover{
     transform: scale(1.2);

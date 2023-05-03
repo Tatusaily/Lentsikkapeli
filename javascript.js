@@ -57,9 +57,8 @@ getQuestion = async function(category){
         console.log(answers)
         console.log(correct)
         //console.log(triviaArray)
-
     // TODO Tähän sit koodia joka syöttää ne kysymykset sinne front-endiin
-
+    document.getElementById("question").innerText = triviaQuestion
 
 }
 /*
@@ -130,7 +129,8 @@ let categoryButtons = document.getElementsByClassName("category")
 for (let button of categoryButtons){
     const buttontext = button.innerHTML
     button.addEventListener("click", function (){getQuestion(buttontext)
-    document.getElementById("buttons").style.display = "none";})
+    document.getElementById("buttons").style.display = "none";
+    document.getElementById("answerbox").style.display = "flex";})
 }
 /*
 categoryButtons.forEach(button => {
