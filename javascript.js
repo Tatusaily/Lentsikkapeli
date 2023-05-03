@@ -102,7 +102,7 @@ checkAnswer = async function(answer){
     } else{isCorrect = false
         points -= 50
     }
-    document.getElementById("points").innerHTML = points
+    document.getElementById("points").innerText = points
     return isCorrect
 }
 getEuropeAirports = async function(){
