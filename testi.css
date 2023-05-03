@@ -138,6 +138,7 @@ h1, h2, p {
     font-size: 2rem;
     transition: .4s;
 }
+
 button:hover{
     transform: scale(1.2);
     cursor: pointer;

@@ -94,7 +94,11 @@ checkAnswer = async function(answer){
     let isCorrect
     if (answer === rightanswer){
         isCorrect = true
-    }else{isCorrect = false}
+        points += 100
+    } else{isCorrect = false
+        points -= 50
+    }
+
     return isCorrect
 }
 getEuropeAirports = async function(){
@@ -119,7 +123,7 @@ drawEuropeAirports = async function(){
 
 //---------------PÄÄOHJELMA----------------
 //---TÄÄ SUORITETAAN AINA KUN HTML AUKEE---
-
+let points = 10000
 let rightanswer = ""
 let currentCategory = ""
 let categoryButtons = document.getElementsByClassName("category")
