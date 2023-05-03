@@ -21,7 +21,7 @@ h1, h2, p {
     bottom: 0;
     width: 100%;
     height: 10%;
-    background-color: rgba(255, 215, 59, 0.82);
+    background-color: rgba(255, 255, 255, 0.54);
     color: white;
     text-align: center;
 }
@@ -150,4 +150,9 @@ button:hover{
     #ffc75f,
     #f9f871);
     )
+}
+#points {
+    font-weight: bold;
+    font-size: 2rem;
+    color: #2c010f;
 }
