@@ -24,12 +24,16 @@ def getplayerdata(playername, password):
     sqlcursor = sqlconnection.cursor()
     sqlcursor.execute(query)
     sqlresult = sqlcursor.fetchone()
-    playerdata = {
-        "name": sqlresult[0],
-        "points": sqlresult[1],
-        "location": sqlresult[2]
-    }
-    return playerdata
+    if sqlresult is not None:
+        playerdata = {
+            "name": sqlresult[0],
+            "points": sqlresult[1],
+            "location": sqlresult[2],
+            "error": 0
+        }
+        return playerdata
+    elif sqlresult is None:
+        return {"error": 404}
 
 
 @app.route('/geteuropeairports')

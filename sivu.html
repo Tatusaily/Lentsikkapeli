@@ -1,15 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script defer src="main.py"></script>
     <meta charset="UTF-8">
-    <title>Lenttispeli</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
-     <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <script defer src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-    <link href="stylesheet.css" rel="stylesheet">
+    <title>LOGIN</title>
     <script defer src="javascript.js"></script>
-    <script defer src="yleistriviascript.js"></script>
 </head>
 <body>
     <form id="loginform" onsubmit="existingUser(); return false">   <!-- return false estää sivua päivittymästä -->
@@ -19,9 +13,6 @@
     <input type="password" id="password" name="password"><br>
     <input type="submit" value="Kirjaudu sisään">
     </form>
-    <div id="map"></div>
-    <div id="questionbox"></div>
-    <button onclick="getQuestion('general')">OTA KYSYMYS</button>
 </body>
 </html>
 

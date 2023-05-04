@@ -1,13 +1,41 @@
 // Funktiot
-existingUser = async function(name, pass){
-    /*
-    const name = document.getElementById("username").value
-    const pass = document.getElementById("password").value
-     */
-    const apiurl = `http://127.0.0.1:3000/getplayerdata/${name},${pass}`
-    let apiresponse = await fetch(apiurl)
-    apiresponse = await apiresponse.json()
-    console.log(apiresponse)
+
+// Ottaa tietokannasta syötetyillä arvoilla pelaajan tiedot. Jos pelaajaa ei löydy niin tekee jotain (ei tee vielä mitään jos ei löydy)
+existingUser = async function(){
+    const name = document.getElementById("username")
+    const pass = document.getElementById("password")
+    const apiurl = `http://127.0.0.1:3000/getplayerdata/${name.value},${pass.value}`
+    let apiresponse
+    try{
+        // Otetaan vastaus ja jos ei ole tyhjä, niin tehdään siitä JSON
+        apiresponse = await fetch(apiurl)
+        apiresponse = await apiresponse.json()
+        /* APIRESPONSE on muotoa:
+            name:
+            points:
+            location: (ICAO)
+            error:
+         */
+        console.log(apiresponse)
+    }catch (error){console.log(error.message)}
+
+    switch (apiresponse.error){
+        case 0: //LOGIN
+            /* Nyt tää vaihtaa sivua kokonaan, mut se ei oikeen sovi
+            Jos vaihtaa sivua ja sit sijoittaa muuttujien arvoja johonkin
+            HTML elementtiin joita ei oo vanhassa sivussa,
+            tulee erroria koska sitä elementtiä ei löydy */
+            document.location.href = "testi.html"
+            playername = apiresponse.name
+            playerpoints = apiresponse.points
+            playerlocation = apiresponse.location
+            break
+        case 404:
+            console.log("Error: 404")
+    }
+
+
+
 }
 getQuestion = async function(category)  {
     // muutetaan category kutsuttavaan muotoon
@@ -61,11 +89,11 @@ checkAnswer = async function(answer){
     let isCorrect
     if (answer === rightanswer){
         isCorrect = true
-        points += 100
+        playerpoints += 100
     } else{isCorrect = false
-        points -= 50
+        playerpoints -= 50
     }
-    document.getElementById("points").innerText = points
+    document.getElementById("pointsfield").innerText = playerpoints
     return isCorrect
 }
 getEuropeAirports = async function(){
@@ -102,9 +130,9 @@ flyToAirport = async function(ICAO){
 //---------------PÄÄOHJELMA----------------
 //---TÄÄ SUORITETAAN AINA KUN HTML AUKEE---
 // Alustetaan Muutujia
-let playername = "tat"
-let points = 10000
-document.getElementById("points").innerText = points
+let playername = "testi"
+let playerpoints = 10000
+let playerlocation = "testi"
 let rightanswer = ""
 let currentCategory = ""
 let answerButtons = document.getElementsByClassName("answer")
