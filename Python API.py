@@ -29,9 +29,22 @@ def getplayerdata(playername, password):
             "name": sqlresult[0],
             "points": sqlresult[1],
             "location": sqlresult[2],
+            "airportlong": "",
+            "airportlat": "",
             "error": 0
         }
-        return playerdata
+        location = playerdata["location"]
+        query = f"SELECT latitude_deg, longitude_deg " \
+                f"FROM airport " \
+                f"WHERE ident= '{location}' ;"
+        sqlcursor = sqlconnection.cursor()
+        sqlcursor.execute(query)
+        sqlresult = sqlcursor.fetchone()
+        airportdata = {
+            "latitude": sqlresult[0],
+            "longitude": sqlresult[1]
+        }
+        return playerdata, airportdata
     elif sqlresult is None:
         return {"error": 404}
 
@@ -48,11 +61,15 @@ def geteuropeairports():
     )
     query = f"SELECT latitude_deg, longitude_deg, ident, name " \
             f"FROM airport " \
-            f"WHERE continent='EU' AND type='large_airport' AND NOT iso_country='RU';"
+            f"WHERE continent='EU' AND (type='large_airport' OR type='medium_airport') AND NOT iso_country='RU';"
     sqlcursor = sqlconnection.cursor()
     sqlcursor.execute(query)
     sqlresult = sqlcursor.fetchall()
-    return sqlresult
+    randnum = random.sample(range(len(sqlresult)), 500)
+    airfields = []
+    for num in randnum:
+        airfields.append(sqlresult[randnum])
+    return airfields
 
 
 @app.route('/moveplayer/<icao>,<name>')

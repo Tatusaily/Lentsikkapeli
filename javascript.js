@@ -127,7 +127,10 @@ drawEuropeAirports = async function(){
 }
 // Liikuttaa pelaajan annettuun ICAO koodiin
 flyToAirport = async function(ICAO){
+    // ICAO on uuden kentän ICAO
+
     await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername}`)
+
 }
 
 
