@@ -123,14 +123,22 @@ checkAnswer = async function(answer){
         default:
             diffMod = 1;
     }
-    if (answer === rightanswer){
+    if (answer === rightanswer) {
         isCorrect = true
         playerpoints += 100 * diffMod
-    } else{isCorrect = false
+    } else {isCorrect = false
         playerpoints -= 50 * diffMod
     } playerpoints = Math.floor(playerpoints)
     document.getElementById("points").innerText = playerpoints
-    return isCorrect
+    if (playerpoints >= 2500) {
+        // voitto, käyttäjän tallennus
+    } else if (playerpoints <= 0){
+        // häviö, uusi peli/poistu
+    }
+
+    else {
+        return isCorrect;
+    }
 }
 getEuropeAirports = async function(){
     let euAirportList = await fetch('http://127.0.0.1:3000/geteuropeairports')
@@ -157,11 +165,11 @@ drawEuropeAirports = async function(){
     }
     console.log("kentät piirretty :)")
 }
-flyToAirport = async function(ICAO){
+flyToAirport = async function(ICAO, playerpoints){
     let oldLocation = airportlocation
     // ICAO on uuden kentän ICAO
     // Päivittää pelaajan sijainnin tietokantaan ja ottaa uuden kentän koordinaatit samalla.
-    airportlocation = await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername}`)
+    airportlocation = await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername},${playerpoints}`)
 
     if (oldLocation !== ""){
         // Uusi - vanha
