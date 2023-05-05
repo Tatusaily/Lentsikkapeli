@@ -37,7 +37,6 @@ existingUser = async function(){
 
 
 }
-// Hakee kysymyksen trivia-apista kysymyksen ja palauttaa kysymyksen avaimineen
 getQuestion = async function(category)  {
     // muutetaan category kutsuttavaan muotoon
     switch (category){
@@ -57,15 +56,23 @@ getQuestion = async function(category)  {
             category = "general"
             break;
     }
-    // Haetaan kysymys trivia-apista
+    //Tää vaihtaa vaikeustasoa pistemäärän mukaan
+    if (playerpoints < 750){
+        difficulty = "easy"
+    } else if (playerpoints > 1250) {
+        difficulty = "hard"
+    } else {
+        difficulty = "medium"
+    }
     let result
     if (category === "general"){
-        result = await generalTrivia()
+        result = await generalTrivia(difficulty)
         currentCategory = "general"
     }else{
-        result = await mainTrivia(category)
+        result = await mainTrivia(category, difficulty)
         currentCategory = category
     }
+    console.log(category, difficulty)
     const triviaArray = result.results[0]
     const triviaQuestion = triviaArray.question
     const correct = triviaArray.correct_answer
@@ -86,26 +93,34 @@ getQuestion = async function(category)  {
     }
 
 }
-// Tarkistaa vastauksen
 checkAnswer = async function(answer){
     let isCorrect
+    let diffMod
+    switch (difficulty) {
+        case 'easy':
+            diffMod = 0.75
+            break;
+        case 'hard':
+            diffMod = 1.5
+            break;
+        default:
+            diffMod = 1;
+    }
     if (answer === rightanswer){
         isCorrect = true
-        playerpoints += 100
+        playerpoints += 100 * diffMod
     } else{isCorrect = false
-        playerpoints -= 50
-    }
-    document.getElementById("pointsfield").innerText = playerpoints
+        playerpoints -= 50 * diffMod
+    } playerpoints = Math.floor(playerpoints)
+    document.getElementById("points").innerText = playerpoints
     return isCorrect
 }
-// Palauttaa listan Euroopan kentistä
 getEuropeAirports = async function(){
     let euAirportList = await fetch('http://127.0.0.1:3000/geteuropeairports')
     euAirportList = await euAirportList.json()
     console.log(euAirportList)
     return euAirportList
 }
-// Piirtää haetut Euroopan kentät kartalle
 drawEuropeAirports = async function(){
     const euAirportList = await getEuropeAirports()
     console.log("saatiin kentät, aletaan piirtämään")
@@ -125,7 +140,6 @@ drawEuropeAirports = async function(){
     }
     console.log("kentät piirretty :)")
 }
-// Liikuttaa pelaajan annettuun ICAO koodiin
 flyToAirport = async function(ICAO){
     // ICAO on uuden kentän ICAO
 
@@ -137,9 +151,10 @@ flyToAirport = async function(ICAO){
 
 //---------------PÄÄOHJELMA----------------
 //---TÄÄ SUORITETAAN AINA KUN HTML AUKEE---
-// Alustetaan Muutujia
+// Alustetaan Muuttujia
+let difficulty = ""
 let playername = "testi"
-let playerpoints = 10000
+let playerpoints = 200
 let playerlocation = "testi"
 let rightanswer = ""
 let currentCategory = ""
