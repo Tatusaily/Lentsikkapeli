@@ -20,14 +20,10 @@ existingUser = async function(){
     }catch (error){console.log(error.message)}
     switch (apiresponse.error){
         case 0: //LOGIN
-            /* Nyt tää vaihtaa sivua kokonaan, mut se ei oikeen sovi
-            Jos vaihtaa sivua ja sit sijoittaa muuttujien arvoja johonkin
-            HTML elementtiin joita ei oo vanhassa sivussa,
-            tulee erroria koska sitä elementtiä ei löydy */
-            document.location.href = "testi.html"
             playername = apiresponse.name
             playerpoints = apiresponse.points
-            playerlocation =
+            playerlocation = apiresponse.location
+            airportlocation = [apiresponse.airportlong, apiresponse.airportlat]
             break
         case 404:
             console.log("Error: 404")
@@ -140,10 +136,21 @@ drawEuropeAirports = async function(){
     console.log("kentät piirretty :)")
 }
 flyToAirport = async function(ICAO){
+    let oldLocation = airportlocation
     // ICAO on uuden kentän ICAO
+    // Päivittää pelaajan sijainnin tietokantaan ja ottaa uuden kentän koordinaatit samalla.
+    airportlocation = await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername}`)
 
-    await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername}`)
-
+    if (oldLocation !== ""){
+        // Uusi - vanha
+        // distance = vanhan ja uuden koordinaatin erotus
+        let distance = [airportlocation[0]-oldLocation[0], airportlocation[1]-oldLocation[1]]
+        // kuljettu etäisyys on vektorin pituus = sqrt(x^2 + y^2)
+        distance = Math.sqrt(Math.pow(distance[0],2)+Math.pow(distance[1],2))
+        console.log(playerpoints, distance)
+        playerpoints =- distance*100
+        console.log(playerpoints)
+    }
 }
 
 
@@ -155,6 +162,8 @@ let difficulty = ""
 let playername = "testi"
 let playerpoints = 200
 let playerlocation = "testi"
+// Airportlocation on nykyisen lentokentän koordinaatit [longitude, latitude] muodossa
+let airportlocation = ""
 let rightanswer = ""
 let currentCategory = ""
 let answerButtons = document.getElementsByClassName("answer")
