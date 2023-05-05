@@ -4,14 +4,14 @@
 submitForm = async function(mode){
     const playerName = document.getElementById("player-name").value;
     const password = document.getElementById("password").value;
-
+    document.getElementById('player-login').reset();
     if (playerName === '' || password === '') {
         alert('Please fill in both fields.');
         return false;
     }
 
     if(mode === "old"){
-        const apiurl = `http://127.0.0.1:3000/getplayerdata/${playername},${password}`
+        const apiurl = `http://127.0.0.1:3000/getplayerdata/${playerName},${password}`
         let apiresponse
         try{
             // Otetaan vastaus ja jos ei ole tyhjä, niin tehdään siitä JSON
@@ -38,9 +38,13 @@ submitForm = async function(mode){
     } else if(mode === "new"){
         const apiurl = `http://127.0.0.1:3000/createplayer/${playerName},${password}`
         let apiresponse
+        console.log(playerName, password)
         try{
+            console.log("Mentiin tänne")
             apiresponse = await fetch(apiurl)
+            console.log("1")
             apiresponse = await apiresponse.json()
+            console.log("2")
             console.log(apiresponse)
         }catch (error){console.log(error.message)}
         switch (apiresponse.error){
@@ -52,7 +56,6 @@ submitForm = async function(mode){
                 return false
         }
     }
-  document.getElementById('player-login').reset();
 }
 getQuestion = async function(category)  {
     // muutetaan category kutsuttavaan muotoon

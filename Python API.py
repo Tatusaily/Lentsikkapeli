@@ -96,7 +96,7 @@ def moveplayer(icao, name, points):
     return sqlresult
 
 
-@app.route('createplayer/<playername>,<password>')
+@app.route('/createplayer/<playername>,<password>')
 def createplayer(playername, password):
     sqlconnection = mysql.connector.connect(
         host='localhost',
@@ -108,7 +108,7 @@ def createplayer(playername, password):
     )
     query = f"SELECT screen_name " \
             f"FROM game " \
-            f"WHERE screen_name= '{playername}';"
+            f"WHERE screen_name = '{playername}';"
     sqlcursor = sqlconnection.cursor()
     sqlcursor.execute(query)
     sqlresult = sqlcursor.fetchone()
