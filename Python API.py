@@ -40,11 +40,9 @@ def getplayerdata(playername, password):
         sqlcursor = sqlconnection.cursor()
         sqlcursor.execute(query)
         sqlresult = sqlcursor.fetchone()
-        airportdata = {
-            "latitude": sqlresult[0],
-            "longitude": sqlresult[1]
-        }
-        return playerdata, airportdata
+        playerdata["airportlong"] = sqlresult[0]
+        playerdata["airportlat"] = sqlresult[1]
+        return playerdata
     elif sqlresult is None:
         return {"error": 404}
 

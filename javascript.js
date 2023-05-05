@@ -18,7 +18,6 @@ existingUser = async function(){
          */
         console.log(apiresponse)
     }catch (error){console.log(error.message)}
-
     switch (apiresponse.error){
         case 0: //LOGIN
             /* Nyt tää vaihtaa sivua kokonaan, mut se ei oikeen sovi
@@ -28,7 +27,7 @@ existingUser = async function(){
             document.location.href = "testi.html"
             playername = apiresponse.name
             playerpoints = apiresponse.points
-            playerlocation = apiresponse.location
+            playerlocation =
             break
         case 404:
             console.log("Error: 404")
