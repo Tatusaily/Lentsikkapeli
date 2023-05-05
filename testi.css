@@ -16,15 +16,31 @@ h1, h2, p {
 .question_p {
     display: flex;
 }
-.header {
+.form {
+    text-align: center;
+    font-size: 2rem;
+    color: #f39b17;
+}
+.submit {
+    flex-direction: column;
+    display: flex;
+    border: none;
+    background: linear-gradient(
+    45deg,
+    #845ec2,
+    #d65db1,
+    #ff6f91,
+    #ffc75f,
+    #f9f871);
+    );
+    box-shadow: 0 3px 10px rgba(105, 0, 252, 0.84);
+    padding: 0.5em 1.5em;
+    border-radius: 30px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
     font-size: 2rem;
     text-align: center;
-    left: 0;
-    bottom: 0;
-    color: rgba(222, 6, 63, 0.6);
-    text-shadow: 5px 5px 20px white;
-    width: 100%;
-    visibility: hidden;
+    transition: .4s;
 }
 .frontblock {
     display: block;
