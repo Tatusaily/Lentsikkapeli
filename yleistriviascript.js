@@ -3,10 +3,10 @@
 const generalTriArr = [9, 21, 22, 26, 27]
 // tää ottaa randomilla sen noist arrayn numeroista
 const randomGen = Math.floor(Math.random() * generalTriArr.length);
-// tää on se funktio mut ei toimi vielä kokonaan, en tiiä pitääks tän olla async (varmaan pitää)
-// pitää viel lisää joku jolla saa ne sit sinne html tiedostoihin
-async function generalTrivia() {
-  const apiUrl = `https://opentdb.com/api.php?amount=1&category=${generalTriArr[randomGen]}&difficulty=medium&type=multiple`;
+
+let apiUrl
+async function generalTrivia(difficulty) {
+  apiUrl = `https://opentdb.com/api.php?amount=1&category=${generalTriArr[randomGen]}&difficulty=${difficulty}&type=multiple`;
   try {
     const result = await fetch(apiUrl)
     const jsonResult = await result.json()
@@ -16,7 +16,7 @@ async function generalTrivia() {
   }
 }
 
-async function mainTrivia(category) {
+async function mainTrivia(category, difficulty) {
   let catNum
   let random
   switch(category){
@@ -39,7 +39,8 @@ async function mainTrivia(category) {
     default:
       console.log("Encountered an error. No such category.")
   }
-  const apiUrl = `https://opentdb.com/api.php?amount=1&category=${catNum}&difficulty=medium&type=multiple`;
+  apiUrl = `https://opentdb.com/api.php?amount=1&category=${catNum}&difficulty=${difficulty}&type=multiple`;
+  console.log(apiUrl)
   try {
     const result = await fetch(apiUrl)
     const jsonResult = await result.json()
