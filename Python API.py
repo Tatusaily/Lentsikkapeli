@@ -70,8 +70,8 @@ def geteuropeairports():
     return airfields
 
 
-@app.route('/moveplayer/<icao>,<name>')
-def moveplayer(icao, name):
+@app.route('/moveplayer/<icao>,<name>,<points>')
+def moveplayer(icao, name, points):
     sqlconnection = mysql.connector.connect(
         host='localhost',
         port=3306,
@@ -82,7 +82,7 @@ def moveplayer(icao, name):
     )
     # Päivitetään pelaajan sijainti
     query = f"UPDATE GAME " \
-            f"SET location = '{icao}' " \
+            f"SET location = '{icao}', points = '{points}' " \
             f"WHERE screen_name = '{name}' ;"
     sqlcursor = sqlconnection.cursor()
     sqlcursor.execute(query)
