@@ -5,11 +5,10 @@ function submitForm() {
   if (playerName === '' || password === '') {
     alert('Please fill in both fields.');
     return false;
-  }
+  } else if ()
   console.log('Player Name: ' + playerName);
   console.log('Password: ' + password);
 
-  // reset
   document.getElementById('player-login').reset();
   return false;
 }
