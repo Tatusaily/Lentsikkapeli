@@ -80,13 +80,20 @@ def moveplayer(icao, name):
         password='sala1',
         autocommit=True
     )
+    # Päivitetään pelaajan sijainti
     query = f"UPDATE GAME " \
             f"SET location = '{icao}' " \
             f"WHERE screen_name = '{name}' ;"
-    print(query)
     sqlcursor = sqlconnection.cursor()
     sqlcursor.execute(query)
-    return "Player Moved"
+    # Otetaan uuden kentän tiedot
+    query = f"SELECT latitude_deg, longitude_deg " \
+            f"FROM airport " \
+            f"WHERE ident= '{icao}';"
+    sqlcursor = sqlconnection.cursor()
+    sqlcursor.execute(query)
+    sqlresult = sqlcursor.fetchone()
+    return sqlresult
 
 
 # Pääohjelma käynnistää flask-taustapalvelun localhostiin
