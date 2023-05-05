@@ -11,10 +11,17 @@
 	<script src="yleistriviascript.js" defer></script>
 	<script src="javascript.js" defer></script>
 </head>
-<body class="blokku">
+<body>
+<h1 class="loginheader">Player Login</h1>
+	<form>
+		<label for="player-name">Player Name:</label>
+		<input type="text" id="player-name" name="player-name"><br><br>
+		<label for="password">Password:</label>
+		<input type="password" id="password" name="password"><br><br>
+		<button type="submit" onclick="submitForm()">Submit</button>
+	</form>
 <header class="header">bibimbap peli blip blaap</header>
 <footer id="points" class="footer"></footer>
-	<div class="frontblock"></div>
 	<div class="container">
 		<div id="map" class="map box item one">Map box</div>
 		<div class="box item two">
@@ -24,6 +31,7 @@
 				<button class="button category">Mythology</button>
 				<button class="button category">Entertainment</button>
 				<button class="button category">Science</button>
+				<button class="button category">General</button>
 			</div>
 			<div id="answerbox" class="container-two">
 				<button class="button answer a">A</button>
@@ -32,8 +40,6 @@
 				<button class="button answer d">D</button>
 			</div>
 		</div>
-
 	</div>
 </body>
-
 </html>
