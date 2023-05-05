@@ -96,6 +96,34 @@ def moveplayer(icao, name):
     return sqlresult
 
 
+@app.route('createplayer/<playername>,<password>')
+def createplayer(playername, password):
+    sqlconnection = mysql.connector.connect(
+        host='localhost',
+        port=3306,
+        database='flight_game',
+        user='user1',
+        password='sala1',
+        autocommit=True
+    )
+    query = f"SELECT screen_name " \
+            f"FROM game " \
+            f"WHERE screen_name= '{playername}';"
+    sqlcursor = sqlconnection.cursor()
+    sqlcursor.execute(query)
+    sqlresult = sqlcursor.fetchone()
+    if sqlresult is None:
+        # Pelaajaa ei ole.
+        query = f"INSERT into game (screen_name, password) " \
+                f"VALUES ({playername},{password});"
+        sqlcursor = sqlconnection.cursor()
+        sqlcursor.execute(query)
+        return {"error": 0}
+    elif sqlresult is not None:
+        print("Pelaaja koitti tehdä jo olemasssa olevan pelaajan")
+        return {"error": 100}
+
+
 # Pääohjelma käynnistää flask-taustapalvelun localhostiin
 if __name__ == '__main__':
 

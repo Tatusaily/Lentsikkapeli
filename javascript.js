@@ -1,36 +1,58 @@
 // Funktiot
 
 // Ottaa tietokannasta syötetyillä arvoilla pelaajan tiedot. Jos pelaajaa ei löydy niin tekee jotain (ei tee vielä mitään jos ei löydy)
-existingUser = async function(){
-    const name = document.getElementById("username")
-    const pass = document.getElementById("password")
-    const apiurl = `http://127.0.0.1:3000/getplayerdata/${name.value},${pass.value}`
-    let apiresponse
-    try{
-        // Otetaan vastaus ja jos ei ole tyhjä, niin tehdään siitä JSON
-        apiresponse = await fetch(apiurl)
-        apiresponse = await apiresponse.json()
-        /* APIRESPONSE on muotoa:
-            name:
-            points:
-            location: (ICAO)
-            error:
-         */
-        console.log(apiresponse)
-    }catch (error){console.log(error.message)}
-    switch (apiresponse.error){
-        case 0: //LOGIN
-            playername = apiresponse.name
-            playerpoints = apiresponse.points
-            playerlocation = apiresponse.location
-            airportlocation = [apiresponse.airportlong, apiresponse.airportlat]
-            break
-        case 404:
-            console.log("Error: 404")
+submitForm = async function(mode){
+    const playerName = document.getElementById("player-name").value;
+    const password = document.getElementById("password").value;
+
+    if (playerName === '' || password === '') {
+        alert('Please fill in both fields.');
+        return false;
     }
 
-
-
+    if(mode === "old"){
+        const apiurl = `http://127.0.0.1:3000/getplayerdata/${playername},${password}`
+        let apiresponse
+        try{
+            // Otetaan vastaus ja jos ei ole tyhjä, niin tehdään siitä JSON
+            apiresponse = await fetch(apiurl)
+            apiresponse = await apiresponse.json()
+            /* APIRESPONSE on muotoa:
+                name:
+                points:
+                location: (ICAO)
+                error:
+             */
+            console.log(apiresponse)
+        }catch (error){console.log(error.message)}
+        switch (apiresponse.error){
+            case 0: //LOGIN
+                playername = apiresponse.name
+                playerpoints = apiresponse.points
+                playerlocation = apiresponse.location
+                airportlocation = [apiresponse.airportlong, apiresponse.airportlat]
+                break
+            case 404:
+                console.log("Error: 404")
+        }
+    } else if(mode === "new"){
+        const apiurl = `http://127.0.0.1:3000/createplayer/${playerName},${password}`
+        let apiresponse
+        try{
+            apiresponse = await fetch(apiurl)
+            apiresponse = await apiresponse.json()
+            console.log(apiresponse)
+        }catch (error){console.log(error.message)}
+        switch (apiresponse.error){
+            case 0:
+                playername = playerName
+                break
+            case 100:
+                window.alert("Player with this name already exists.")
+                return false
+        }
+    }
+  document.getElementById('player-login').reset();
 }
 getQuestion = async function(category)  {
     // muutetaan category kutsuttavaan muotoon
@@ -160,10 +182,10 @@ flyToAirport = async function(ICAO){
 // Alustetaan Muuttujia
 let difficulty = ""
 let playername = "testi"
-let playerpoints = 200
-let playerlocation = "testi"
+let playerpoints = 1000
+let playerlocation = "EFHK"
 // Airportlocation on nykyisen lentokentän koordinaatit [longitude, latitude] muodossa
-let airportlocation = ""
+let airportlocation = [60.317222,24.963333]
 let rightanswer = ""
 let currentCategory = ""
 let answerButtons = document.getElementsByClassName("answer")
