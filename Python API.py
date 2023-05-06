@@ -115,7 +115,7 @@ def createplayer(playername, password):
     if sqlresult is None:
         # Pelaajaa ei ole.
         query = f"INSERT into game (screen_name, password) " \
-                f"VALUES ({playername},{password});"
+                f"VALUES ('{playername}','{password}');"
         sqlcursor = sqlconnection.cursor()
         sqlcursor.execute(query)
         return {"error": 0}

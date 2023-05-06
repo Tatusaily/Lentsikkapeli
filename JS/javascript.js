@@ -1,10 +1,11 @@
 // Funktiot
 
-// Ottaa tietokannasta syötetyillä arvoilla pelaajan tiedot. Jos pelaajaa ei löydy niin tekee jotain (ei tee vielä mitään jos ei löydy)
+// Ottaa tietokannasta syötetyillä arvoilla pelaajan tiedot. Jos pelaajaa ei löydy niin tekee jotain
 submitForm = async function(mode){
     const playerName = document.getElementById("player-name").value;
     const password = document.getElementById("password").value;
     document.getElementById('player-login').reset();
+    // Jos kentät on tyhjiä
     if (playerName === '' || password === '') {
         alert('Please fill in both fields.');
         return false;
@@ -26,7 +27,7 @@ submitForm = async function(mode){
             console.log(apiresponse)
         }catch (error){console.log(error.message)}
         switch (apiresponse.error){
-            case 0: //LOGIN
+            case 0: //TIEDOT OIKEIN, LOGIN
                 playername = apiresponse.name
                 playerpoints = apiresponse.points
                 playerlocation = apiresponse.location
