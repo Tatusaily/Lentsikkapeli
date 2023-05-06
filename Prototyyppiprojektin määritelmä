@@ -4,25 +4,15 @@ Ctrl + F TODO
 Poistetaan toi todo listasta kun osa on tehty.
 
 TODO SQL kantaan pelaajan suoritetut kategoriat kiinni pelaajaan
-TATU TODO Pelin alussa pelaaja-olento tulee JavaScriptiin pakettina.
-Kartalla kaikki Euroopan kentät (-venäjä).
-    Muutamat kentät on "valittuja" joista tulee kategoria-kysymys
-    ei-valituista kentistä tulee yleistieto -kysymys.
+
 
 Python:
 SQL Queryt
-    TODO Uuden pelaajan luominen ja vanhan pelaajan haku
     TODO Tallennus
 
 JS:
-    TODO Liikkuminen         Python API
-    TODO Trivia-interaktio   Trivia API
-        TODO lista.filter
-    TODO Päämenu?
-        Form:           Python API
-            Uusi pelaaja
-            Vanha pelaaja
     TODO Tallennus           Python API
+    TODO Pelaaja aloittaa niin kartan sijainti menee pelaajan sijaintiin
 
 HTML & CSS:
     TODO Ulkoasu ja ulkorakenne
