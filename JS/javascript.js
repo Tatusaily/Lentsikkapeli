@@ -32,9 +32,11 @@ submitForm = async function(mode){
                 playerpoints = apiresponse.points
                 playerlocation = apiresponse.location
                 airportlocation = [apiresponse.airportlong, apiresponse.airportlat]
-                break
+                await drawEuropeAirports()
+                return false
             case 404:
                 console.log("Error: 404")
+                break
         }
     } else if(mode === "new"){
         const apiurl = `http://127.0.0.1:3000/createplayer/${playerName},${password}`
@@ -51,10 +53,11 @@ submitForm = async function(mode){
         switch (apiresponse.error){
             case 0:
                 playername = playerName
-                break
+                await drawEuropeAirports()
+                return false
             case 100:
                 window.alert("Player with this name already exists.")
-                return false
+                break
         }
     }
 }
@@ -147,7 +150,6 @@ checkAnswer = async function(answer){
 getEuropeAirports = async function(){
     let euAirportList = await fetch('http://127.0.0.1:3000/geteuropeairports')
     euAirportList = await euAirportList.json()
-    console.log(euAirportList)
     return euAirportList
 }
 drawEuropeAirports = async function(){
@@ -166,6 +168,7 @@ drawEuropeAirports = async function(){
         popDiv.appendChild(popText)
         popDiv.appendChild(button)
         marker.bindPopup(popDiv).openPopup()
+        map.setView(airportlocation)
     }
     console.log("kentät piirretty :)")
 }
@@ -174,7 +177,6 @@ flyToAirport = async function(ICAO, playerpoints){
     // ICAO on uuden kentän ICAO
     // Päivittää pelaajan sijainnin tietokantaan ja ottaa uuden kentän koordinaatit samalla.
     airportlocation = await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername},${playerpoints}`)
-
     if (oldLocation !== ""){
         // Uusi - vanha
         // distance = vanhan ja uuden koordinaatin erotus
@@ -185,6 +187,7 @@ flyToAirport = async function(ICAO, playerpoints){
         playerpoints =- distance*100
         console.log(playerpoints)
     }
+    map.setView(airportlocation)
 }
 
 
@@ -226,14 +229,14 @@ map.setView([60.224168, 24.758141], 15)
 // Luodaan eri layerit joita voi vaihtaa mapin oikeesta kulmasta.
 // Näitä löytyy nimellä "tilelayer" tai "baselayer".
 // Näihin pitäis copyright-säännön mukaan laittaa joku "attribution" juttu mut ei laiteta ku se näyttää rumalta.
-const lightlayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {maxZoom: 7,})
+// const lightlayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {maxZoom: 7,})
 const darklayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {maxZoom: 7,})
 // Laitetaan layerit listaan ja linkataan se lista karttaan.
-const maplayers = {"Lightmode": lightlayer, "Darkmode": darklayer}
-const layerControl = L.control.layers(maplayers).addTo(map)
+// const maplayers = {"Lightmode": lightlayer, "Darkmode": darklayer}
+// const layerControl = L.control.layers(maplayers).addTo(map)
 // Aloitetaan vaalealla layerilla
-lightlayer.addTo(map)
+darklayer.addTo(map)
 const myIcon = L.icon({
-    iconUrl: 'IMG/star.png',
+    iconUrl: '../IMG/star.png',
     iconSize: [10, 10]
 })

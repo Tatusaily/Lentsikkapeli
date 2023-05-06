@@ -59,14 +59,17 @@ def geteuropeairports():
     )
     query = f"SELECT latitude_deg, longitude_deg, ident, name " \
             f"FROM airport " \
-            f"WHERE continent='EU' AND (type='large_airport' OR type='medium_airport') AND NOT iso_country='RU';"
+            f"WHERE continent='EU' AND type='large_airport' AND NOT iso_country='RU';"
     sqlcursor = sqlconnection.cursor()
     sqlcursor.execute(query)
     sqlresult = sqlcursor.fetchall()
-    randnum = random.sample(range(len(sqlresult)), 500)
+    '''
+    randnum = random.sample(range(len(sqlresult)), 200)
     airfields = []
     for num in randnum:
-        airfields.append(sqlresult[randnum])
+        airfields.append(sqlresult[num])
+    '''
+    airfields = sqlresult
     return airfields
 
 
