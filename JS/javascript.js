@@ -172,15 +172,17 @@ drawEuropeAirports = async function(){
     }
     console.log("kentät piirretty :)")
 }
-flyToAirport = async function(ICAO, playerpoints){
+flyToAirport = async function(ICAO){
     let oldLocation = airportlocation
     // ICAO on uuden kentän ICAO
     // Päivittää pelaajan sijainnin tietokantaan ja ottaa uuden kentän koordinaatit samalla.
     airportlocation = await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername},${playerpoints}`)
+    console.log(airportlocation)
     if (oldLocation !== ""){
         // Uusi - vanha
         // distance = vanhan ja uuden koordinaatin erotus
         let distance = [airportlocation[0]-oldLocation[0], airportlocation[1]-oldLocation[1]]
+        console.log(distance)
         // kuljettu etäisyys on vektorin pituus = sqrt(x^2 + y^2)
         distance = Math.sqrt(Math.pow(distance[0],2)+Math.pow(distance[1],2))
         console.log(playerpoints, distance)
@@ -188,6 +190,7 @@ flyToAirport = async function(ICAO, playerpoints){
         console.log(playerpoints)
     }
     map.setView(airportlocation)
+    getQuestion()
 }
 
 
