@@ -4,7 +4,8 @@
 submitForm = async function(mode){
     const playerName = document.getElementById("player-name").value;
     const password = document.getElementById("password").value;
-    document.getElementById('player-login').reset();
+    const loginform = document.getElementById('player-login')
+    loginform.reset()
     // Jos kentät on tyhjiä
     if (playerName === '' || password === '') {
         alert('Please fill in both fields.');
@@ -33,6 +34,7 @@ submitForm = async function(mode){
                 currentAirportCoords = [apiresponse.airportlong, apiresponse.airportlat]
                 await drawEuropeAirports()
                 document.getElementById("points").innerText = playerpoints
+                loginform.style.display = "none"
                 return false
             case 404:
                 console.log("Error: 404")
@@ -131,7 +133,6 @@ checkAnswer = async function(answer){
         playerpoints -= 50 * diffMod
     } playerpoints = Math.floor(playerpoints)
     document.getElementById("points").innerText = playerpoints
-    ansCatB
     if (playerpoints >= 2500) {
         // voitto
         window.alert("You have won. Great job!")
@@ -144,6 +145,7 @@ checkAnswer = async function(answer){
         window.close()
     }
     else {
+        ansCatBox.style.display = "none"
         return isCorrect;
     }
 }
@@ -224,7 +226,7 @@ let rightanswer = ""
 let currentCategory = ""
 let answerButtons = document.getElementsByClassName("answer")
 let categoryButtons = document.getElementsByClassName("category")
-let ansCatBox = document.getElementsByClassName("two")
+let ansCatBox = document.getElementById("boxtwo")
 // Napit
 for (let button of categoryButtons){
     const buttontext = button.innerHTML
