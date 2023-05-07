@@ -33,6 +33,7 @@ submitForm = async function(mode){
                 playerlocation = apiresponse.location
                 currentAirportCoords = [apiresponse.airportlong, apiresponse.airportlat]
                 await drawEuropeAirports()
+                document.getElementById("points").innerText = playerpoints
                 return false
             case 404:
                 console.log("Error: 404")
@@ -43,17 +44,14 @@ submitForm = async function(mode){
         let apiresponse
         console.log(playerName, password)
         try{
-            console.log("Mentiin tänne")
             apiresponse = await fetch(apiurl)
-            console.log("1")
             apiresponse = await apiresponse.json()
-            console.log("2")
-            console.log(apiresponse)
         }catch (error){console.log(error.message)}
         switch (apiresponse.error){
             case 0:
                 playername = playerName
                 await drawEuropeAirports()
+                document.getElementById("points").innerText = playerpoints
                 return false
             case 100:
                 window.alert("Player with this name already exists.")

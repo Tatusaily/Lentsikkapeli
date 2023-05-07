@@ -60,7 +60,6 @@ h1, h2, p {
     background-color: rgba(54, 6, 86, 0.6);
     color: white;
     text-align: center;
-    visibility: hidden;
 }
 .backg{
     height: 100vh;
