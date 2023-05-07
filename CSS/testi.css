@@ -107,7 +107,7 @@ h1, h2, p {
     margin-right: 10px;
 }
 .two {
-    display: grid;
+    display: none;
     flex: 1 1 20%;
     background-color: rgba(54, 6, 86, 0.6);
     height: auto;

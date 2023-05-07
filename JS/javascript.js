@@ -24,7 +24,6 @@ submitForm = async function(mode){
                 location: (ICAO)
                 error:
              */
-            console.log(apiresponse)
         }catch (error){console.log(error.message)}
         switch (apiresponse.error){
             case 0: //TIEDOT OIKEIN, LOGIN
@@ -57,7 +56,10 @@ submitForm = async function(mode){
                 window.alert("Player with this name already exists.")
                 break
         }
+        const form = document.getElementsByClassName("form")
+        form.style.display = "none"
     }
+
 }
 getQuestion = async function(category)  {
     // muutetaan category kutsuttavaan muotoon
@@ -94,7 +96,6 @@ getQuestion = async function(category)  {
         result = await mainTrivia(category, difficulty)
         currentCategory = category
     }
-    console.log(category, difficulty)
     const triviaArray = result.results[0]
     const triviaQuestion = triviaArray.question
     const correct = triviaArray.correct_answer
@@ -102,11 +103,6 @@ getQuestion = async function(category)  {
     answers.push(correct)
     rightanswer = correct
     answers = answers.sort(() => 0.5 - Math.random())
-    // DEBUG LOG
-        console.log(triviaQuestion)
-        console.log(answers)
-        console.log(correct)
-        //console.log(triviaArray)
     document.getElementById("question").innerHTML = triviaQuestion
     let counter = 0
     for (let button of answerButtons){
@@ -135,18 +131,18 @@ checkAnswer = async function(answer){
         playerpoints -= 50 * diffMod
     } playerpoints = Math.floor(playerpoints)
     document.getElementById("points").innerText = playerpoints
+    ansCatB
     if (playerpoints >= 2500) {
-        // voitto, käyttäjän tallennus
+        // voitto
         window.alert("You have won. Great job!")
         await fetch(`http://127.0.0.1:3000/deleteplayer/${playername}`)
         window.close()
-    } else if (playerpoints <= 0){
-        // häviö, uusi peli/poistu
+    } else if (playerpoints <= 0) {
+        // häviö
         window.alert("Your points have reached 0. Game Over.")
         await fetch(`http://127.0.0.1:3000/deleteplayer/${playername}`)
         window.close()
     }
-
     else {
         return isCorrect;
     }
@@ -167,14 +163,12 @@ getEuropeAirports = async function(){
 }
 drawEuropeAirports = async function(){
     const euAirportList = await getEuropeAirports()
-    console.log("saatiin kentät, aletaan piirtämään")
     // Piirretään kentät ja annetaan niille popupit
     for (let airport of euAirportList){
         const button = document.createElement("button")
         button.innerHTML = "Fly to airport"
-        button.onclick = function(){flyToAirport(airport[2])}
+        button.onclick = function(){flyToAirport(airport[2]); ansCatBox.style.display = "flex";}
         let marker = L.marker([airport[0], airport[1]], {icon: myIcon}).addTo(map)
-
         // Pop-up sisältö
         let popDiv = document.createElement("div")
         let popText = document.createElement("p")
@@ -183,16 +177,13 @@ drawEuropeAirports = async function(){
         popDiv.appendChild(button)
         marker.bindPopup(popDiv).openPopup()
     }
-    console.log(currentAirportCoords)
     currentMapMarker = L.marker([currentAirportCoords[0], currentAirportCoords[1]], {icon: currentIcon}).addTo(map)
-    console.log("kentät piirretty :)")
     map.setView(currentAirportCoords)
 }
 flyToAirport = async function(ICAO){
     // ICAO on uuden kentän ICAO
     // Päivittää pelaajan sijainnin tietokantaan.
     await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername},${playerpoints}`)
-
     // Haetaan ICAOlla kenntä listasta ja otetaan sen koordinaatit uuden kentän koordinaatiksi
     for (let i = 0; i<airportlist.length; i++){
         if(airportlist[i].icao === ICAO){
@@ -206,22 +197,16 @@ flyToAirport = async function(ICAO){
         // Uusi - vanha
         // distance = vanhan ja uuden koordinaatin erotus
         let distance = [newAirportCoords[0]-currentAirportCoords[0], newAirportCoords[1]-currentAirportCoords[1]]
-        console.log(distance)
         // kuljettu etäisyys on vektorin pituus = sqrt(x^2 + y^2)
         distance = Math.sqrt(Math.pow(distance[0],2)+Math.pow(distance[1],2))
-        console.log("pts:",playerpoints, "dist:",distance)
         playerpoints = playerpoints - (distance*5 +10)
-        console.log((distance*5 +10))
-        console.log(playerpoints)
     }
-
     currentAirportCoords = newAirportCoords
     map.removeLayer(currentMapMarker)
     currentMapMarker = L.marker([currentAirportCoords[0], currentAirportCoords[1]], {icon: currentIcon}).addTo(map)
     map.setView(currentAirportCoords)
-    getQuestion()
-}
 
+}
 
 
 //---------------PÄÄOHJELMA----------------
@@ -239,7 +224,7 @@ let rightanswer = ""
 let currentCategory = ""
 let answerButtons = document.getElementsByClassName("answer")
 let categoryButtons = document.getElementsByClassName("category")
-
+let ansCatBox = document.getElementsByClassName("two")
 // Napit
 for (let button of categoryButtons){
     const buttontext = button.innerHTML
