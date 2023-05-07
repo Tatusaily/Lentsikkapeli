@@ -31,7 +31,7 @@ submitForm = async function(mode){
                 playername = apiresponse.name
                 playerpoints = apiresponse.points
                 playerlocation = apiresponse.location
-                airportlocation = [apiresponse.airportlong, apiresponse.airportlat]
+                currentAirportCoords = [apiresponse.airportlong, apiresponse.airportlat]
                 await drawEuropeAirports()
                 return false
             case 404:
@@ -150,11 +150,21 @@ checkAnswer = async function(answer){
 getEuropeAirports = async function(){
     let euAirportList = await fetch('http://127.0.0.1:3000/geteuropeairports')
     euAirportList = await euAirportList.json()
+    // Laitetaan tiedot kaikista kentistä listaan myöhempää käyttöä varten
+    euAirportList.forEach(airport =>{
+        const port = {
+            "icao": airport[2],
+            "name": airport[3],
+            "coords": [airport[0], airport[1]]
+        }
+        airportlist.push(port)
+    })
     return euAirportList
 }
 drawEuropeAirports = async function(){
     const euAirportList = await getEuropeAirports()
     console.log("saatiin kentät, aletaan piirtämään")
+    // Piirretään kentät ja annetaan niille popupit
     for (let airport of euAirportList){
         const button = document.createElement("button")
         button.innerHTML = "Fly to airport"
@@ -168,28 +178,43 @@ drawEuropeAirports = async function(){
         popDiv.appendChild(popText)
         popDiv.appendChild(button)
         marker.bindPopup(popDiv).openPopup()
-        map.setView(airportlocation)
     }
+    console.log(currentAirportCoords)
+    currentMapMarker = L.marker([currentAirportCoords[0], currentAirportCoords[1]], {icon: currentIcon}).addTo(map)
     console.log("kentät piirretty :)")
+    map.setView(currentAirportCoords)
 }
 flyToAirport = async function(ICAO){
-    let oldLocation = airportlocation
     // ICAO on uuden kentän ICAO
     // Päivittää pelaajan sijainnin tietokantaan ja ottaa uuden kentän koordinaatit samalla.
-    airportlocation = await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername},${playerpoints}`)
-    console.log(airportlocation)
-    if (oldLocation !== ""){
+    //currentAirportCoords = await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername},${playerpoints}`)
+
+    // Haetaan ICAOlla kenntä listasta ja otetaan sen koordinaatit uuden kentän koordinaatiksi
+    for (let i = 0; i<airportlist.length; i++){
+        if(airportlist[i].icao === ICAO){
+            newAirportCoords = airportlist[i].coords
+            break
+        }
+    }
+
+    // Lasketaan etäisyys ja vähennetään pisteet
+    if (currentAirportCoords !== ""){
         // Uusi - vanha
         // distance = vanhan ja uuden koordinaatin erotus
-        let distance = [airportlocation[0]-oldLocation[0], airportlocation[1]-oldLocation[1]]
+        let distance = [newAirportCoords[0]-currentAirportCoords[0], newAirportCoords[1]-currentAirportCoords[1]]
         console.log(distance)
         // kuljettu etäisyys on vektorin pituus = sqrt(x^2 + y^2)
         distance = Math.sqrt(Math.pow(distance[0],2)+Math.pow(distance[1],2))
-        console.log(playerpoints, distance)
-        playerpoints =- distance*100
+        console.log("pts:",playerpoints, "dist:",distance)
+        playerpoints = playerpoints - (distance*5 +10)
+        console.log((distance*5 +10))
         console.log(playerpoints)
     }
-    map.setView(airportlocation)
+
+    currentAirportCoords = newAirportCoords
+    map.removeLayer(currentMapMarker)
+    currentMapMarker = L.marker([currentAirportCoords[0], currentAirportCoords[1]], {icon: currentIcon}).addTo(map)
+    map.setView(currentAirportCoords)
     getQuestion()
 }
 
@@ -198,12 +223,14 @@ flyToAirport = async function(ICAO){
 //---------------PÄÄOHJELMA----------------
 //---TÄÄ SUORITETAAN AINA KUN HTML AUKEE---
 // Alustetaan Muuttujia
+let airportlist = []
 let difficulty = ""
 let playername = "testi"
 let playerpoints = 1000
 let playerlocation = "EFHK"
-// Airportlocation on nykyisen lentokentän koordinaatit [longitude, latitude] muodossa
-let airportlocation = [60.317222,24.963333]
+let currentAirportCoords = [60.317222,24.963333]    // Longitude Latitiude
+let newAirportCoords = []
+let currentMapMarker
 let rightanswer = ""
 let currentCategory = ""
 let answerButtons = document.getElementsByClassName("answer")
@@ -231,15 +258,16 @@ let map = L.map("map", {renderer: L.canvas()})
 map.setView([60.224168, 24.758141], 15)
 // Luodaan eri layerit joita voi vaihtaa mapin oikeesta kulmasta.
 // Näitä löytyy nimellä "tilelayer" tai "baselayer".
-// Näihin pitäis copyright-säännön mukaan laittaa joku "attribution" juttu mut ei laiteta ku se näyttää rumalta.
 // const lightlayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {maxZoom: 7,})
 const darklayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {maxZoom: 7,})
-// Laitetaan layerit listaan ja linkataan se lista karttaan.
 // const maplayers = {"Lightmode": lightlayer, "Darkmode": darklayer}
 // const layerControl = L.control.layers(maplayers).addTo(map)
-// Aloitetaan vaalealla layerilla
 darklayer.addTo(map)
 const myIcon = L.icon({
     iconUrl: '../IMG/star.png',
     iconSize: [10, 10]
+})
+const currentIcon = L.icon({
+    iconUrl: '../IMG/star.png',
+    iconSize: [30, 30]
 })
