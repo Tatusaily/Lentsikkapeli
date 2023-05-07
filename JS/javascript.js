@@ -139,8 +139,14 @@ checkAnswer = async function(answer){
     document.getElementById("points").innerText = playerpoints
     if (playerpoints >= 2500) {
         // voitto, käyttäjän tallennus
+        window.alert("You have won. Great job!")
+        await fetch(`http://127.0.0.1:3000/deleteplayer/${playername}`)
+        window.close()
     } else if (playerpoints <= 0){
         // häviö, uusi peli/poistu
+        window.alert("Your points have reached 0. Game Over.")
+        await fetch(`http://127.0.0.1:3000/deleteplayer/${playername}`)
+        window.close()
     }
 
     else {
@@ -186,8 +192,8 @@ drawEuropeAirports = async function(){
 }
 flyToAirport = async function(ICAO){
     // ICAO on uuden kentän ICAO
-    // Päivittää pelaajan sijainnin tietokantaan ja ottaa uuden kentän koordinaatit samalla.
-    //currentAirportCoords = await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername},${playerpoints}`)
+    // Päivittää pelaajan sijainnin tietokantaan.
+    await fetch(`http://127.0.0.1:3000/moveplayer/${ICAO},${playername},${playerpoints}`)
 
     // Haetaan ICAOlla kenntä listasta ja otetaan sen koordinaatit uuden kentän koordinaatiksi
     for (let i = 0; i<airportlist.length; i++){

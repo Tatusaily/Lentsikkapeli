@@ -89,14 +89,7 @@ def moveplayer(icao, name, points):
             f"WHERE screen_name = '{name}' ;"
     sqlcursor = sqlconnection.cursor()
     sqlcursor.execute(query)
-    # Otetaan uuden kentän tiedot
-    query = f"SELECT latitude_deg, longitude_deg " \
-            f"FROM airport " \
-            f"WHERE ident= '{icao}';"
-    sqlcursor = sqlconnection.cursor()
-    sqlcursor.execute(query)
-    sqlresult = sqlcursor.fetchone()
-    return sqlresult
+    return{"ok": 1}
 
 
 @app.route('/createplayer/<playername>,<password>')
@@ -125,6 +118,22 @@ def createplayer(playername, password):
     elif sqlresult is not None:
         print("Pelaaja koitti tehdä jo olemasssa olevan pelaajan")
         return {"error": 100}
+
+
+@app.route('/deleteplayer/<name>')
+def deleteplayer(name):
+    sqlconnection = mysql.connector.connect(
+        host='localhost',
+        port=3306,
+        database='flight_game',
+        user='user1',
+        password='sala1',
+        autocommit=True
+    )
+    query = f"DELETE FROM game " \
+            f"WHERE screen_name = '{name}';"
+    sqlcursor = sqlconnection.cursor()
+    sqlcursor.execute(query)
 
 
 # Pääohjelma käynnistää flask-taustapalvelun localhostiin
