@@ -129,8 +129,10 @@ checkAnswer = async function(answer){
     if (answer === rightanswer) {
         isCorrect = true
         playerpoints += 100 * diffMod
+        window.alert(`You got the question correct and earned ${100 * diffMod} points!`)
     } else {isCorrect = false
         playerpoints -= 50 * diffMod
+        window.alert(`You got the question wrong and lost ${50 * diffMod} points!`)
     } playerpoints = Math.floor(playerpoints)
     document.getElementById("points").innerText = playerpoints
     if (playerpoints >= 2500) {
@@ -201,7 +203,8 @@ flyToAirport = async function(ICAO){
         let distance = [newAirportCoords[0]-currentAirportCoords[0], newAirportCoords[1]-currentAirportCoords[1]]
         // kuljettu etäisyys on vektorin pituus = sqrt(x^2 + y^2)
         distance = Math.sqrt(Math.pow(distance[0],2)+Math.pow(distance[1],2))
-        playerpoints = playerpoints - (distance*5 +10)
+        playerpoints = Math.floor(playerpoints - (distance*5 +10))
+        document.getElementById("points").innerText = playerpoints
     }
     currentAirportCoords = newAirportCoords
     map.removeLayer(currentMapMarker)
