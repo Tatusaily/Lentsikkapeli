@@ -171,7 +171,7 @@ drawEuropeAirports = async function(){
     for (let airport of euAirportList){
         const button = document.createElement("button")
         button.innerHTML = "Fly to airport"
-        button.onclick = function(){flyToAirport(airport[2]); ansCatBox.style.display = "flex";}
+        button.onclick = function(){flyToAirport(airport[2]); ansCatBox.style.display = "grid";}
         let marker = L.marker([airport[0], airport[1]], {icon: myIcon}).addTo(map)
         // Pop-up sisältö
         let popDiv = document.createElement("div")
